@@ -1,0 +1,19 @@
+Se inicializan los semaforos
+Sem1(1)
+Sem2(2)
+Sem3(3)
+Proceso P1
+    adquirir(sem1)
+    operaciones_P1
+    liberar(sem3)
+fin
+Proceso P2
+    adquirir(sem2)
+    operaciones_P2
+    liberar(sem1)
+fin
+Proceso P3
+    adquirir(sem3)
+    operaciones_P3
+    liberar(sem2)
+fin
