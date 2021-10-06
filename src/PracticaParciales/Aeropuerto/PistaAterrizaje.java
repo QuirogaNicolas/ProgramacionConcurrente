@@ -14,13 +14,17 @@ public class PistaAterrizaje {
     }
     public void despegar(){
         try {
+            System.out.println(Thread.currentThread().getName()+" quiere despegar");
             lockAterrizar.lock();
+            System.out.println(Thread.currentThread().getName()+" dice: no hay nadie aterrizando");
             lockDespegar.lock();
+            System.out.println(Thread.currentThread().getName()+" tiene permiso para despegar");
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         finally{
+            System.out.println(Thread.currentThread().getName()+" ha despegado con exito");
             lockAterrizar.unlock();
             lockDespegar.unlock();
         }
@@ -28,12 +32,15 @@ public class PistaAterrizaje {
     }
     public void aterrizar(){
         try{
-            lockDespegar.lock();
+            System.out.println(Thread.currentThread().getName()+" quiere aterrizar");
+            lockAterrizar.lock();
+            System.out.println(Thread.currentThread().getName()+" tiene permiso para aterrizar");
             Thread.sleep(1000);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
         finally{
+            System.out.println(Thread.currentThread().getName()+" ha aterrizado con exito");
             lockAterrizar.unlock();
         }
     }
@@ -41,7 +48,9 @@ public class PistaAterrizaje {
         //considero que no es necesario coordinarse para estacionar 
         //esto debido que pueden haber varios hangares donde dejar el avion
         try {
+            System.out.println(Thread.currentThread().getName()+" esta estacionando");
             Thread.sleep(1000);
+            System.out.println(Thread.currentThread().getName()+" ha estacionado con exito");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
