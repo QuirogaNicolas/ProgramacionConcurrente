@@ -1,23 +1,49 @@
 package PracticaParciales.Aeropuerto;
 
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class PistaAterrizaje {
-    Semaphore semAterrizar;
-    Semaphore semDespegar;
-    Semaphore semEstacionar;
+    Lock lockAterrizar;
+    Lock lockDespegar;
+    Lock lockEstacionar;
     public PistaAterrizaje(){
-        Semaphore semAterrizar= new Semaphore(1);
-        Semaphore semDespegar= new Semaphore(1);
-        Semaphore semEstacionar= new Semaphore(1);
+        lockAterrizar= new ReentrantLock();
+        lockDespegar= new ReentrantLock();
+        lockEstacionar= new ReentrantLock();
     }
     public void despegar(){
-
+        try {
+            lockAterrizar.lock();
+            lockDespegar.lock();
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        finally{
+            lockAterrizar.unlock();
+            lockDespegar.unlock();
+        }
+        
     }
     public void aterrizar(){
-
+        try{
+            lockDespegar.lock();
+            Thread.sleep(1000);
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        finally{
+            lockAterrizar.unlock();
+        }
     }
     public void estacionar(){
-        
+        //considero que no es necesario coordinarse para estacionar 
+        //esto debido que pueden haber varios hangares donde dejar el avion
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
