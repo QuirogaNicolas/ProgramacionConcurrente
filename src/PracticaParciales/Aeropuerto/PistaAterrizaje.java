@@ -12,13 +12,17 @@ public class PistaAterrizaje {
         lockDespegar= new ReentrantLock();
         lockEstacionar= new ReentrantLock();
     }
+    //INTENTAR MAÑANAAA
+    //siento que con semaforos se solucionaria la prioridad
     public void despegar(){
         try {
+            //Necesito mejorar la prioridad pero no puedo usar Synchronized 
+            //Capaz con un lockConsultar?????
             System.out.println(Thread.currentThread().getName()+" quiere despegar");
-            lockAterrizar.lock();
-            System.out.println(Thread.currentThread().getName()+" dice: no hay nadie aterrizando");
             lockDespegar.lock();
             System.out.println(Thread.currentThread().getName()+" tiene permiso para despegar");
+            lockAterrizar.lock();
+            System.out.println(Thread.currentThread().getName()+" dice: no hay nadie aterrizando");
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
