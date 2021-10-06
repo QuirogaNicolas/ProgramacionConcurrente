@@ -2,7 +2,7 @@ package PracticaParciales.Aeropuerto;
 
 public class TorreControl {
     public static void main(String[] args){
-        PistaAterrizaje pista= new PistaAterrizaje();
+        PistaSemaforo pista= new PistaSemaforo();
         Avion avion1= new Avion(pista);
         Avion avion2= new Avion(pista);
         Avion avion3= new Avion(pista);

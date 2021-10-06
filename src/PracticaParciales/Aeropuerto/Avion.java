@@ -1,8 +1,8 @@
 package PracticaParciales.Aeropuerto;
 
 public class Avion implements Runnable {
-    private PistaAterrizaje pistaAsignada;
-    public Avion(PistaAterrizaje pista){
+    private PistaSemaforo pistaAsignada;
+    public Avion(PistaSemaforo pista){
         this.pistaAsignada= pista;
     }
     @Override
