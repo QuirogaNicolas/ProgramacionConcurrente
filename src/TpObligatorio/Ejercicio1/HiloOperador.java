@@ -1,29 +1,29 @@
 package TpObligatorio.Ejercicio1;
 
-public class HiloOperador implements Runnable{
-    private int x;
-    private int y;
-    private char operacion;
-    private int resultado= 0;
-    public HiloOperador(int x, int y, char op){
-        this.x= x;
-        this.y= y;
+public class HiloOperador implements Runnable {
+    private String accion;
+    private Accionar porHacer;
+
+    public HiloOperador(String accion, Accionar porHacer) {
+        this.accion = accion;
+        this.porHacer = porHacer;
     }
-    public void run(){
-        if(operacion== '+'){
-            sumar();
+
+    public void run() {
+        // Segun la accion que le asignemos al HiloOperador es lo que vamos a hacer
+        switch (accion) {
+        case "s1":
+            porHacer.s1();
+            break;
+        case "s2":
+            porHacer.s2();
+            break;
+        case "s3":
+            porHacer.s3();
+            break;
+        case "s4":
+            porHacer.s4();
+            break;
         }
-        else{
-            restar();
-        }
-    }
-    public void sumar(){
-        this.resultado= x + y;
-    }
-    public void restar(){
-        this.resultado= x - y;
-    }
-    public int getResultado(){
-        return resultado;
     }
 }
