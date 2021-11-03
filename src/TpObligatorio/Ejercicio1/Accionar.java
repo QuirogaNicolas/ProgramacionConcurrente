@@ -18,24 +18,14 @@ public class Accionar {
     }
 
     public void s1() {
-        try {
-            semaforo1.acquire();
-            System.out.println(Thread.currentThread().getName() + " comienza a trabajar");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        System.out.println(Thread.currentThread().getName() + " comienza a trabajar");
         this.a = x + y;
         System.out.println(Thread.currentThread().getName() + " termino. A = "+this.a);
         semaforo2.release();
     }
 
     public void s2() {
-        try {
-            semaforo1.acquire();
-            System.out.println(Thread.currentThread().getName() + " comienza a trabajar");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        System.out.println(Thread.currentThread().getName() + " comienza a trabajar");
         this.b = z - 1;
         System.out.println(Thread.currentThread().getName() + " termino. B = "+ this.b);
         semaforo2.release();

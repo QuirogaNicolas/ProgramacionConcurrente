@@ -15,6 +15,7 @@ public class Empaquetador implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            lasCajas.reponerCaja();
         }
     }
 }
