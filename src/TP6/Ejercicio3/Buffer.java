@@ -28,6 +28,8 @@ public class Buffer {
                 this.buffer[cont] = aImprimir;
                 // indicamos que pudo ingresar el elemento
                 pudoIngresar = true;
+                this.ocupados++;
+                System.out.println("usuario " + Thread.currentThread().getName() + " accede al buffer");
                 // notificamos el cambio
                 this.notifyAll();
             } else {
@@ -55,6 +57,7 @@ public class Buffer {
                 aImprimir = buffer[posicion];
                 // lo eliminamos del buffer para dejar un nuevo lugar
                 this.buffer[posicion] = null;
+                this.ocupados--;
                 // notificamos que se ha agregado un nuevo lugar
                 this.notifyAll();
             } else {

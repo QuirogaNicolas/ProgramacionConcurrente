@@ -5,5 +5,7 @@ public class Medidor implements Runnable{
     public Medidor(GestorSala unGestor){
         this.unGestor= unGestor;
     }
-    
+    public void run(){
+        
+    }
 }

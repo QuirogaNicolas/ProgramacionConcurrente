@@ -19,6 +19,7 @@ public class Impresora implements Runnable {
     }
 
     public void imprimir(Object aImprimir) {
+        System.out.println("entra a imprimir");
         System.out.println(Thread.currentThread().getName() + " imprime: " + aImprimir);
     }
 }

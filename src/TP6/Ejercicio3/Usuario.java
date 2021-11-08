@@ -11,7 +11,6 @@ public class Usuario implements Runnable {
 
     public void run() {
         while (true) {
-            System.out.println("usuario " + Thread.currentThread().getName() + " accede al buffer");
             elbuffer.ingresar(impresion);
             try {
                 Thread.sleep(5000);
