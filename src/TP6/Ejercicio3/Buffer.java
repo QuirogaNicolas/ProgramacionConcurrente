@@ -1,4 +1,4 @@
-package TP5.Ejercicio3;
+package TP6.Ejercicio3;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package TP5.Ejercicio2;
+package TP6.Ejercicio2;
 
 public class Persona {
     
