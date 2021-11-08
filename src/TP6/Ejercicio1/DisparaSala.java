@@ -1,4 +1,4 @@
-package TP5.Ejercicio1;
+package TP6.Ejercicio1;
 
 public class DisparaSala {
     public static void main(String[] args) {
