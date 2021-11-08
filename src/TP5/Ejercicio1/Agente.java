@@ -14,11 +14,6 @@ public class Agente implements Runnable {
     public void run() {
         while (true) {
             sala.colocar(r.nextInt(3) + 1);
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
