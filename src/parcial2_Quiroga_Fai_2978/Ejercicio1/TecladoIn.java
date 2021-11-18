@@ -1,4 +1,4 @@
-package TpObligatorio;
+package parcial2_Quiroga_Fai_2978.Ejercicio1;
 
 
 
