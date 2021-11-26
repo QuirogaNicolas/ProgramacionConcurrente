@@ -2,9 +2,11 @@ package TrabajoConAdicionales.TrenConLatch;
 
 public class Tren implements Runnable {
     private Estacion laEstacion;
+    private int capacidad;
 
-    public Tren(Estacion laEstacion) {
+    public Tren(Estacion laEstacion, int capacidad) {
         this.laEstacion = laEstacion;
+        this.capacidad = capacidad;
     }
 
     public void run() {
@@ -19,5 +21,9 @@ public class Tren implements Runnable {
             e.printStackTrace();
         }
         System.out.println("El tren ha llegado a destino!");
+    }
+
+    public int getCapacidad() {
+        return this.capacidad;
     }
 }
