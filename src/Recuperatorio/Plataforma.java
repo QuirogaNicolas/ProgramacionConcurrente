@@ -38,9 +38,10 @@ public class Plataforma {
     public void publicarCapitulo() {
         // la empresa productora finaliza la fimacion del capitulo y lo publica en la
         // plataforma
-        lockVerSerie.lock();
-        lockTraducir.lock();
+        
+        
         System.out.println("+++ " + Thread.currentThread().getName() + " publica un nuevo capitulo");
+        System.out.println(cantPublicados+1);
         this.capitulosEspaniol[cantPublicados] = "Capitulo " + cantPublicados + 1;
         this.capitulosParaTraducir[cantPublicados] = "Capitulo " + cantPublicados + 1;
         /*
@@ -50,9 +51,12 @@ public class Plataforma {
          */
         System.out.println(
                 Thread.currentThread().getName() + " avisa a los socios que ven en espaniol y a los traductores");
+        cantPublicados++;
+        lockVerSerie.lock();
         serieEspaniol.signalAll();
-        hayParaTraducir.signalAll();
         lockVerSerie.unlock();
+        lockTraducir.lock();
+        hayParaTraducir.signalAll();
         lockTraducir.unlock();
     }
 
@@ -88,6 +92,7 @@ public class Plataforma {
         System.out.println(Thread.currentThread().getName() + " publica el capitulo traducido");
         this.cantTraducidos++;
         capitulosIngles[cantTraducidos - 1] = "Capitulo " + cantTraducidos;
+        System.out.println(lockVerSerie.tryLock());
         lockVerSerie.lock();
         // les avisamos a los socios que ven en ingles que el capitulo ya esta publicado
         System.out.println(Thread.currentThread().getName() + " avisa a los socios que ven la serie en ingles");
