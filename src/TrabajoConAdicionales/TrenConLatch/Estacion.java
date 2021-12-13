@@ -5,7 +5,6 @@ import java.util.concurrent.Semaphore;
 
 public class Estacion {
     private CountDownLatch latchParaSalir;
-    private CountDownLatch latchParaBajarDelTren;
     private CountDownLatch latchParaEmpezarControl;
     private Tren elTren;
     private ControlTren elControl;
@@ -15,8 +14,17 @@ public class Estacion {
     private Semaphore semaforoSubir;
     private Semaphore semaforoBajar;
 
-    public Estacion() {
+    public Estacion(int cantidad, Tren elTren, ControlTren elControl, VendedorTickets elVendedor) {
         // aca se inicializan todos los atributos
+        this.latchParaSalir= new CountDownLatch(1);
+        this.latchParaEmpezarControl= new CountDownLatch(cantidad);
+        this.elTren= elTren;
+        this.elControl= elControl;
+        this.elVendedor= elVendedor;
+        this.semaforoVendedor= new Semaphore(0);
+        this.semaforoComprar= new Semaphore(1);
+        this.semaforoSubir= new Semaphore(1);
+        this.semaforoBajar= new Semaphore(1);
     }
 
     public void prepararseParaSalir() {
@@ -72,6 +80,7 @@ public class Estacion {
             e.printStackTrace();
         }
         elControl.empezarElcontrol();
+        latchParaSalir.countDown();
     }
 
     public void vender() {

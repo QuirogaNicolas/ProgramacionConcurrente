@@ -8,10 +8,11 @@ public class Main {
         int capacidad = TecladoIn.readInt();
         System.out.println("ingrese la cantidad de pasajeros que habra en total");
         int cantidad = TecladoIn.readInt();
-        Estacion laEstacion = new Estacion();
+        
         Thread vendedor = new Thread(new VendedorTickets(laEstacion, capacidad), "el vendedor");
         Thread control = new Thread(new ControlTren(laEstacion), "el control");
         Thread elTren = new Thread(new Tren(laEstacion, capacidad), "el tren");
+        Estacion laEstacion = new Estacion(cantidad, elTren, control, vendedor);
         Thread pasajeros[] = new Thread[cantidad];
         for (int i = 0; i < cantidad; i++) {
             pasajeros[i] = new Thread(new Pasajero(laEstacion), "pasajero " + i);
