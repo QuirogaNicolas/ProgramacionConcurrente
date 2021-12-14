@@ -17,7 +17,8 @@ public class Socio implements Runnable {
     public void run() {
         for (int j = 0; j < 3; j++) {
             // El usuario verá la serie j veces
-            // Esto lo hago para que no mire la serie infinitamente
+            // Esto lo hago para que sea mas facil leer
+            // Pero puede mirarla infinitamente con un while (true)
             // Aleatoriamente se elegira un idioma para ver la serie
             if (eleccion == 1) {
                 // El socio elige ver la serie en ingles

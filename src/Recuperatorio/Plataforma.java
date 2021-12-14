@@ -45,8 +45,8 @@ public class Plataforma {
     public void publicarCapitulo() {
         // La empresa productora finaliza la fimacion del capitulo y lo publica en la
         // Plataforma
-        System.out.println("+++ " + Thread.currentThread().getName() + " publica un nuevo capitulo +++");
-        System.out.println(cantPublicados + 1);
+        System.out.println(
+                "+++ " + Thread.currentThread().getName() + " publica el capitulo " + (cantPublicados + 1) + " +++");
         // Es agregado al arreglo de capitulos disponibles para ver en espaniol
         this.capitulosEspaniol[cantPublicados] = "Capitulo " + cantPublicados + 1;
         // Es agregado al arreglo de capitulos disponibles para traducir
@@ -84,7 +84,8 @@ public class Plataforma {
             }
             // Una vez tomamos el capitulo
             // Lo indicamos por pantalla
-            System.out.println(Thread.currentThread().getName() + " toma un capitulo y lo va a traducir");
+            System.out.println(Thread.currentThread().getName() + " toma el capitulo " + (cantTraducidos + 1)
+                    + " y lo va a traducir");
             // Guardamos el numero de capitulo que traduciremos
             terminamos = cantTraducidos;
             // Indicamos que el capitulo va a ser traducido
@@ -99,7 +100,8 @@ public class Plataforma {
         System.out.println(Thread.currentThread().getName() + " quiere publicar capitulo traducido");
         lockTraducir.lock();
         System.out
-                .println("/// " + Thread.currentThread().getName() + " publica el capitulo traducido en el lugar ///");
+                .println("/// " + Thread.currentThread().getName() + " publica el capitulo " + (posicionDelCapitulo)
+                        + " ya traducido ///");
         // Agregan el capitulo en su lugar correspondiente
         capitulosIngles[posicionDelCapitulo] = "Capitulo " + (posicionDelCapitulo + 1);
         lockVerSerieIngles.lock();
