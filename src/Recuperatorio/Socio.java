@@ -1,40 +1,56 @@
 package Recuperatorio;
 
 public class Socio implements Runnable {
+    // Los hilos socios tendran la plataforma donde ver la serie
     private Plataforma laPlataforma;
-    private int capitulosVistos;
+    // Su idioma preferido
     private int eleccion;
+    // Y sabe la cantidad de capitulos que tendra la serie
+    private int capitulosDeLaSerie;
 
-    public Socio(Plataforma laPlataforma) {
+    public Socio(Plataforma laPlataforma, int capitulos) {
         this.laPlataforma = laPlataforma;
-        this.capitulosVistos = 0;
-        this.eleccion = (int) Math.random() * 2;
+        this.capitulosDeLaSerie = capitulos;
+        this.eleccion = (int) Math.floor(Math.random() * 2);
     }
 
     public void run() {
-        if (eleccion == 1) {
-            // El socio elige ver la serie en ingles
-            while (true) {
-                laPlataforma.verSerieIngles(capitulosVistos);
-                /*
-                 * Tendria que mandarlo a dormir aca
-                 * simulando que estoy viendo el capitulo pero bueno
-                 * tal vez mas adelante
-                 */
-                capitulosVistos++;
+        for (int j = 0; j < 3; j++) {
+            // El usuario verá la serie j veces
+            // Esto lo hago para que no mire la serie infinitamente
+            // Aleatoriamente se elegira un idioma para ver la serie
+            if (eleccion == 1) {
+                // El socio elige ver la serie en ingles
+                // Mostramos por pantalla el idioma que eligio para que sea mas facil de seguir
+                System.out.println(Thread.currentThread().getName() + " verá la serie en ingles");
+                for (int i = 0; i < capitulosDeLaSerie; i++) {
+                    // Vemos la serie completa
+                    // Pasa como parametro el capitulo que debe ver
+                    laPlataforma.verSerieIngles(i);
+                    // Simulamos como que el capitulo es visto
+                    verCapitulo(i);
+                }
+            } else {
+                // El socio elige ver la serie en espaniol
+                System.out.println(Thread.currentThread().getName() + " verá la serie en español");
+                for (int i = 0; i < capitulosDeLaSerie; i++) {
+                    // Vemos la serie completa
+                    laPlataforma.verSerieEspaniol(i);
+                    // Simulamos como que el capitulo es visto
+                    verCapitulo(i);
+                }
             }
-        } else {
-            // El socio elige ver la serie en espaniol
-            while (true) {
-                laPlataforma.verSerieEspaniol(capitulosVistos);
-                /*
-                 * Tendria que mandarlo a dormir aca
-                 * simulando que estoy viendo el capitulo pero bueno
-                 * tal vez mas adelante
-                 */
-                capitulosVistos++;
-            }
+            System.out.println(Thread.currentThread().getName() + " Termino de ver la serie. La volvera a ver");
         }
+    }
 
+    public void verCapitulo(int capitulo) {
+        // Este metodo simula que el capitulo es visto
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(Thread.currentThread().getName() + " termino de ver el capitulo " + capitulo);
     }
 }

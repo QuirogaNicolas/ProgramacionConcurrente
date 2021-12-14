@@ -10,7 +10,7 @@ public class Tester {
         Thread Traductor2 = new Thread(new Traductor(laPlataforma), "traductor 2");
         Thread socios[] = new Thread[5];
         for (int i = 0; i < 5; i++) {
-            socios[i] = new Thread(new Socio(laPlataforma), "socio " + i);
+            socios[i] = new Thread(new Socio(laPlataforma, cantCapitulos), "socio " + i);
         }
         for (int i = 0; i < 5; i++) {
             socios[i].start();
