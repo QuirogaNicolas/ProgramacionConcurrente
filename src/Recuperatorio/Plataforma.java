@@ -45,6 +45,8 @@ public class Plataforma {
     public void publicarCapitulo() {
         // La empresa productora finaliza la fimacion del capitulo y lo publica en la
         // Plataforma
+        lockVerSerieEspaniol.lock();
+        lockTraducir.lock();
         System.out.println(
                 "+++ " + Thread.currentThread().getName() + " publica el capitulo " + (cantPublicados + 1) + " +++");
         // Es agregado al arreglo de capitulos disponibles para ver en espaniol
@@ -55,20 +57,18 @@ public class Plataforma {
         System.out.println(
                 Thread.currentThread().getName() + " avisa a los socios que ven en espaniol y a los traductores");
         cantPublicados++;
-        lockVerSerieEspaniol.lock();
         hayCapsEspaniol.signalAll();
-        lockVerSerieEspaniol.unlock();
-        lockTraducir.lock();
         hayParaTraducir.signalAll();
+        lockVerSerieEspaniol.unlock();
         lockTraducir.unlock();
     }
 
     public int tomarParaTraducir() {
         // Los hilos traductores van a traducir los capitulos en espaniol
         // Inicializamos la variable "terminamos" en -1
-        int terminamos = -1;
         System.out.println(Thread.currentThread().getName() + " quiere traducir");
         lockTraducir.lock();
+        int terminamos = -1;
         if (cantCapitulos != cantTraducidos) {
             // Si aun no fueron traducidos todos los capitulos los traductores entran acá
             while (cantPublicados == cantTraducidos) {
@@ -99,12 +99,12 @@ public class Plataforma {
         // Cuando los traductores quieran publicar el capitulo traducido entraran acá
         System.out.println(Thread.currentThread().getName() + " quiere publicar capitulo traducido");
         lockTraducir.lock();
+        lockVerSerieIngles.lock();
         System.out
-                .println("/// " + Thread.currentThread().getName() + " publica el capitulo " + (posicionDelCapitulo)
+                .println("/// " + Thread.currentThread().getName() + " publica el capitulo " + (posicionDelCapitulo + 1)
                         + " ya traducido ///");
         // Agregan el capitulo en su lugar correspondiente
         capitulosIngles[posicionDelCapitulo] = "Capitulo " + (posicionDelCapitulo + 1);
-        lockVerSerieIngles.lock();
         // Les avisamos a los socios que ven en ingles que el capitulo ya esta publicado
         System.out.println(Thread.currentThread().getName() + " avisa a los socios que ven la serie en ingles");
         hayCapsIngles.signalAll();

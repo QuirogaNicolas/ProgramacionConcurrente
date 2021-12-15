@@ -52,6 +52,6 @@ public class Socio implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(Thread.currentThread().getName() + " termino de ver el capitulo " + capitulo);
+        System.out.println(Thread.currentThread().getName() + " termino de ver el capitulo " + (capitulo + 1));
     }
 }
