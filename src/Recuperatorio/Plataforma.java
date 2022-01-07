@@ -48,17 +48,17 @@ public class Plataforma {
         lockVerSerieEspaniol.lock();
         lockTraducir.lock();
         System.out.println(
-                "+++ " + Thread.currentThread().getName() + " publica el capitulo " + (cantPublicados + 1) + " +++");
-        // Es agregado al arreglo de capitulos disponibles para ver en espaniol
-        this.capitulosEspaniol[cantPublicados] = "Capitulo " + cantPublicados + 1;
-        // Es agregado al arreglo de capitulos disponibles para traducir
-        this.capitulosParaTraducir[cantPublicados] = "Capitulo " + cantPublicados + 1;
-        // Avisamos a los usuarios y traductores que hay un capitulo nuevo disponible
-        System.out.println(
+            "+++ " + Thread.currentThread().getName() + " publica el capitulo " + (cantPublicados + 1) + " +++");
+            // Es agregado al arreglo de capitulos disponibles para ver en espaniol
+            this.capitulosEspaniol[cantPublicados] = "Capitulo " + cantPublicados + 1;
+            // Es agregado al arreglo de capitulos disponibles para traducir
+            this.capitulosParaTraducir[cantPublicados] = "Capitulo " + cantPublicados + 1;
+            // Avisamos a los usuarios y traductores que hay un capitulo nuevo disponible
+            System.out.println(
                 Thread.currentThread().getName() + " avisa a los socios que ven en espaniol y a los traductores");
-        cantPublicados++;
-        hayCapsEspaniol.signalAll();
-        hayParaTraducir.signalAll();
+                cantPublicados++;
+                hayCapsEspaniol.signalAll();
+                hayParaTraducir.signalAll();
         lockVerSerieEspaniol.unlock();
         lockTraducir.unlock();
     }
