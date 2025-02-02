@@ -21,7 +21,7 @@ public class Pasajero implements Runnable{
     @Override
     public void run() {
         //Visita PI
-        puestoAtencion
+        
 
         //Visita PA
 
