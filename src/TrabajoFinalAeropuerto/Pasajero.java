@@ -1,4 +1,5 @@
 package TrabajoFinalAeropuerto;
+//import java.util.concurrent.Exchanger;
 
 public class Pasajero implements Runnable{
     //Atributos de los pasajeros
@@ -10,16 +11,14 @@ public class Pasajero implements Runnable{
     private PuestoInformes puestoInforme;
     private PuestoAtencion puestoAtencion;
     private Tren tren;
+    private Exchanger<PuestoAtencion> exchanger;
     
     //Nuevo pasajero
-    public Pasajero(int id, String aerolinea, String vuelo){
+    public Pasajero(int id, String aerolinea, String vuelo, Exchanger ex){
         this.idPasajero = id;
         this.aerolineaPasajero = aerolinea;
         this.vuelo = vuelo;
-    }
-
-    public void asignarPA(PuestoAtencion pa){
-        this.puestoAtencion = pa;
+        this.exchanger = ex;
     }
 
     public void asignarTerminal(int numTerminal){
@@ -29,10 +28,10 @@ public class Pasajero implements Runnable{
     @Override
     public void run() {
         //Visita PI
-        puestoInforme.solicitarGuia(vuelo); //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
+       this.puestoAtencion = exchanger.exchange(aerolineaPasajero); //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
 
         //Visita PA
-        puestoAtencion.hacerCheckIn(vuelo, aerolineaPasajero);; //El hilo puesto de atención le va a asignar una terminal 
+        puestoAtencion.hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
 
         //Visita Tren
         tren.abordar();
