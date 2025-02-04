@@ -29,8 +29,9 @@ public class Pasajero implements Runnable{
     public void run() {
         //Visita PI
         this.puestoAtencion = (puestoAtencion) exchanger.exchange(aerolineaPasajero); //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
-        System.out.println("El pasajero "+this.idPasajero+" se le asignó el puesto de atención "+ this.puestoAtencion);
+        System.out.println("El pasajero "+this.idPasajero+" se le asignó el puesto de atención "+ this.puestoAtencion.getId());
         
+        /*
         //Visita PA
         puestoAtencion.hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
 
@@ -49,6 +50,7 @@ public class Pasajero implements Runnable{
         }
 
         //Embarque
+        */
     }
 
 }
