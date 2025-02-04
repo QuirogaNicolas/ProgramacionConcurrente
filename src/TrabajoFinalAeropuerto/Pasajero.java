@@ -11,7 +11,7 @@ public class Pasajero implements Runnable{
     private PuestoInformes puestoInforme;
     private PuestoAtencion puestoAtencion;
     private Tren tren;
-    private Exchanger<PuestoAtencion> exchanger;
+    private Exchanger<Object> exchanger;
     
     //Nuevo pasajero
     public Pasajero(int id, String aerolinea, String vuelo, Exchanger ex){
@@ -28,8 +28,9 @@ public class Pasajero implements Runnable{
     @Override
     public void run() {
         //Visita PI
-       this.puestoAtencion = exchanger.exchange(aerolineaPasajero); //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
-
+        this.puestoAtencion = (puestoAtencion) exchanger.exchange(aerolineaPasajero); //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
+        System.out.println("El pasajero "+this.idPasajero+" se le asignó el puesto de atención "+ this.puestoAtencion);
+        
         //Visita PA
         puestoAtencion.hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
 
