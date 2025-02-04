@@ -1,9 +1,13 @@
 package TrabajoFinalAeropuerto;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Exchanger;
+
 public class Aeropuerto {
     public static void main(String[] args){
         //int horarioAtencion = 2;
-        Map<String, PuestoAtencion> mapaAerolineas;
+        Map<String, PuestoAtencion> mapaAerolineas = new HashMap<>();
         Exchanger<Object> e1 = new Exchanger<>();
 
         mapaAerolineas.put("ARG", new PuestoAtencion("Puesto A1", "Aerolíneas Argentinas"));
@@ -42,15 +46,14 @@ public class Aeropuerto {
 
          try {
             //Esperamos a que terminen los hilos
-            hiloPI.join(); 
-            p1.join();
-            p2.join();
-            p3.join();
-            p4.join();
+            h1.join();
+            h2.join();
+            h3.join();
+            h4.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         //Cierra el aeropuerto
-        System.out.println("terminamos")
+        System.out.println("terminamos");
     }
 }

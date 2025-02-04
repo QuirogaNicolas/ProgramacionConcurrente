@@ -1,6 +1,8 @@
 package TrabajoFinalAeropuerto;
 //import java.util.concurrent.Exchanger;
 
+import java.util.concurrent.Exchanger;
+
 public class Pasajero implements Runnable{
     //Atributos de los pasajeros
     private int idPasajero;
@@ -28,8 +30,13 @@ public class Pasajero implements Runnable{
     @Override
     public void run() {
         //Visita PI
-        this.puestoAtencion = (puestoAtencion) exchanger.exchange(aerolineaPasajero); //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
-        System.out.println("El pasajero "+this.idPasajero+" se le asignó el puesto de atención "+ this.puestoAtencion.getId());
+        try {
+            this.puestoAtencion = (PuestoAtencion) exchanger.exchange(aerolineaPasajero);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
+        System.out.println("El pasajero "+ this.idPasajero+" se le asignó el puesto de atención "+ this.puestoAtencion.getId());
         
         /*
         //Visita PA

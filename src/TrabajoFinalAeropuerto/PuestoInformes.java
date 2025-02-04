@@ -1,12 +1,15 @@
 package TrabajoFinalAeropuerto;
 
-public class PuestoInformes implements runnable {
+import java.util.Map;
+import java.util.concurrent.Exchanger;
+
+public class PuestoInformes implements Runnable {
     private int idPi;
     private Exchanger<Object> exchanger;
     private Map<String, PuestoAtencion> mapaAerolineas;
     private boolean abierto;
 
-public puestoInforme(Exchanger ex, int id, Map mapa){
+public PuestoInformes(Exchanger<Object> ex, int id, Map<String,PuestoAtencion> mapa){
     this.exchanger = ex;
     this.idPi = id;
     this.mapaAerolineas = mapa;
@@ -14,7 +17,7 @@ public puestoInforme(Exchanger ex, int id, Map mapa){
 }
 
 private PuestoAtencion asignarPuestoAtencion(String vuelo){
-    return mapaAerolineas.get(vuelo.substring(0,3)) //devuelve el puesto de atención correpondiente según las primeras 3 letras del código de vuelo
+    return mapaAerolineas.get(vuelo.substring(0,3)); //devuelve el puesto de atención correpondiente según las primeras 3 letras del código de vuelo
 }
 
 public void detener(){
@@ -24,9 +27,19 @@ public void detener(){
 public void run() {
     String vuelo = "";
     while(abierto){
-        vuelo = exchanger.exchange(null);
+        try {
+            vuelo = (String) exchanger.exchange(null);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         System.out.println("PI recibió el vuelo: " + vuelo);
-        exchanger.exchange(asignarPuestoAtencion(vuelo))
+        try {
+            exchanger.exchange(asignarPuestoAtencion(vuelo));
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
 
