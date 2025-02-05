@@ -16,7 +16,7 @@ public class Pasajero implements Runnable{
     private Exchanger<Object> exchanger;
     
     //Nuevo pasajero
-    public Pasajero(int id, String aerolinea, String vuelo, Exchanger ex){
+    public Pasajero(int id, String aerolinea, String vuelo, Exchanger<Object> ex){
         this.idPasajero = id;
         this.aerolineaPasajero = aerolinea;
         this.vuelo = vuelo;
@@ -31,7 +31,7 @@ public class Pasajero implements Runnable{
     public void run() {
         //Visita PI
         try {
-            this.puestoAtencion = (PuestoAtencion) exchanger.exchange(aerolineaPasajero);
+            this.puestoAtencion = (PuestoAtencion) exchanger.exchange(vuelo);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

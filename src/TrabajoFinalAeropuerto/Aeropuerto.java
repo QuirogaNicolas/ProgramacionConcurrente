@@ -8,7 +8,7 @@ public class Aeropuerto {
     public static void main(String[] args){
         //int horarioAtencion = 2;
         Map<String, PuestoAtencion> mapaAerolineas = new HashMap<>();
-        Exchanger<Object> e1 = new Exchanger<>();
+        Exchanger<Object> e1 = new Exchanger<Object>();
 
         mapaAerolineas.put("ARG", new PuestoAtencion("Puesto A1", "Aerolíneas Argentinas"));
         mapaAerolineas.put("AAS", new PuestoAtencion("Puesto B2", "American Airlines"));

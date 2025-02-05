@@ -25,21 +25,17 @@ public void detener(){
 }
 
 public void run() {
-    String vuelo = "";
+    String vuelo;
     while(abierto){
         try {
             vuelo = (String) exchanger.exchange(null);
+            System.out.println("PI recibió el vuelo: " + vuelo);
+            PuestoAtencion puestoAsignado = asignarPuestoAtencion(vuelo);
+            exchanger.exchange(puestoAsignado);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("PI recibió el vuelo: " + vuelo);
-        try {
-            exchanger.exchange(asignarPuestoAtencion(vuelo));
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        
     }
 }
 
