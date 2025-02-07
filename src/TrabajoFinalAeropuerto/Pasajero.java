@@ -26,6 +26,15 @@ public class Pasajero implements Runnable{
         this.terminalAsignada = numTerminal;
     }
 
+    private void esperarHall(){
+        //Si no hay lugar vamos a esperar
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void run() {
         //Visita PI
@@ -35,6 +44,8 @@ public class Pasajero implements Runnable{
         
         
         //Visita PA
+        puestoAtencion.consultarLugar();
+
         puestoAtencion.hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
         
 /*
