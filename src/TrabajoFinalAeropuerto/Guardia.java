@@ -1,15 +1,15 @@
 package TrabajoFinalAeropuerto;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.Semaphore;
 
 public class Guardia implements Runnable{
-    private Semaphore colaPasajeros;
-    private 
+    private ColaPuestoAtencion cola;
 
     @Override
     public void run() {
-        
+        while (true) {
+            //OJO CON ESTO
+            cola.anunciarHall();
+        }
     }
     
     

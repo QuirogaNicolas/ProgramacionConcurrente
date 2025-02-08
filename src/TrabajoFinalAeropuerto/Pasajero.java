@@ -10,7 +10,7 @@ public class Pasajero implements Runnable{
     private String estadoPasajero;
     private int terminalAsignada;
     private PuestoInformes puestoInforme;
-    private PuestoAtencion puestoAtencion;
+    private Object[] informacion;
     private Tren tren;
 
     
@@ -20,33 +20,26 @@ public class Pasajero implements Runnable{
         this.aerolineaPasajero = aerolinea;
         this.vuelo = vuelo;
         this.puestoInforme = pi;
+        this.informacion = new Object[2];
     }
 
     public void asignarTerminal(int numTerminal){
         this.terminalAsignada = numTerminal;
     }
 
-    private void esperarHall(){
-        //Si no hay lugar vamos a esperar
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void run() {
         //Visita PI
-        this.puestoAtencion = puestoInforme.asignarPuestoAtencion(vuelo);
+        this.informacion = puestoInforme.asignarPuestoAtencion(vuelo);
         //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
-        System.out.println("El pasajero "+ this.idPasajero+" se le asignó el puesto de atención "+ this.puestoAtencion.getId());
+        System.out.println("El pasajero "+ this.idPasajero+" se le asignó el puesto de atención");
         
         
         //Visita PA
-        puestoAtencion.consultarLugar();
+        ((ColaPuestoAtencion) informacion[0]).consultarLugar();
 
-        puestoAtencion.hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
+        ((PuestoAtencion) informacion[1]).hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
         
 /*
         //Visita Tren

@@ -6,15 +6,15 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class PuestoInformes {
     private Lock lock;
-    private Map<String, PuestoAtencion> mapaAerolineas;
+    private Map<String, Object[]> mapaAerolineas;
     
 
-public PuestoInformes(int id, Map<String,PuestoAtencion> mapa){
+public PuestoInformes(int id, Map<String,Object[]> mapa){
     this.lock = new ReentrantLock();
     this.mapaAerolineas = mapa;
 }
 
-public PuestoAtencion asignarPuestoAtencion(String vuelo){
+public Object[] asignarPuestoAtencion(String vuelo){
     lock.lock();
     try {
         //devuelve el puesto de atención correpondiente según las primeras 3 letras del código de vuelo

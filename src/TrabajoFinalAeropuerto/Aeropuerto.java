@@ -6,12 +6,16 @@ import java.util.Map;
 public class Aeropuerto {
     public static void main(String[] args){
         //int horarioAtencion = 2;
-        Map<String, PuestoAtencion> mapaAerolineas = new HashMap<>();
+        Map<String, Object[]> mapaAerolineas = new HashMap<>();
         
 
-        mapaAerolineas.put("ARG", new PuestoAtencion("Puesto A1", "Aerolíneas Argentinas"));
-        mapaAerolineas.put("AAS", new PuestoAtencion("Puesto B2", "American Airlines"));
-        mapaAerolineas.put("FBY", new PuestoAtencion("Puesto C3", "Flybondi"));
+        ColaPuestoAtencion c1 = new ColaPuestoAtencion(3);
+        ColaPuestoAtencion c2 = new ColaPuestoAtencion(3);
+        ColaPuestoAtencion c3 = new ColaPuestoAtencion(3);
+
+        mapaAerolineas.put("ARG", new Object[]{c1,new PuestoAtencion(c1)});
+        mapaAerolineas.put("AAS", new Object[]{c2,new PuestoAtencion(c2)});
+        mapaAerolineas.put("FBY", new Object[]{c3,new PuestoAtencion(c3)});
 
         //Se crean los procesos
         PuestoInformes pi1 = new PuestoInformes( 4, mapaAerolineas);
