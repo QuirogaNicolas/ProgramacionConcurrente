@@ -27,7 +27,7 @@ public class ColaPuestoAtencion {
             }
         }
         System.out.println(Thread.currentThread().getName() + " entró en la fila");
-        lugaresFila -= 1;
+        lugaresFila--;
         EsperarFila.unlock();
     }
 
@@ -41,7 +41,7 @@ public class ColaPuestoAtencion {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        lugaresFila += 1;
+        lugaresFila++;
         hayLugar.signalAll();
         System.out.println(Thread.currentThread().getName() + " anuncia que hay un lugar en la fila");
         EsperarFila.unlock();

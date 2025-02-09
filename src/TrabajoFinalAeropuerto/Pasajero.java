@@ -23,15 +23,10 @@ public class Pasajero implements Runnable{
         this.informacion = new Object[2];
     }
 
-    public void asignarTerminal(int numTerminal){
-        this.terminalAsignada = numTerminal;
-    }
-
-
     @Override
     public void run() {
         //Visita PI
-        this.informacion = puestoInforme.asignarPuestoAtencion(vuelo);
+        informacion = puestoInforme.asignarPuestoAtencion(vuelo);
         //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
         System.out.println("El pasajero "+ Thread.currentThread().getName() +" se le asignó el puesto de atención");
         
@@ -39,14 +34,14 @@ public class Pasajero implements Runnable{
         //Visita PA
         ((ColaPuestoAtencion) informacion[0]).consultarLugar();
 
-        ((PuestoAtencion) informacion[1]).hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
-        
-/*
+        terminalAsignada = ((PuestoAtencion) informacion[1]).hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
+        //Capaz el tren podría asignarse acá simulando que le indican donde queda
+
         //Visita Tren
         tren.abordar();
         //se sube
-        tren.bajar(); //El tren le debe avisar en qué terminal está y el pasajero comparar con la terminal que se le asigno
-
+        tren.bajar(terminalAsignada); //El tren le debe avisar en qué terminal está y el pasajero comparar con la terminal que se le asigno
+/*
         //Visita FreeShop
         if((int)(Math.random() * 2) == 1){
             //Tiene ganas de entrar al freeshop
