@@ -15,12 +15,13 @@ public class Pasajero implements Runnable{
 
     
     //Nuevo pasajero
-    public Pasajero(int id, String aerolinea, String vuelo, PuestoInformes pi){
+    public Pasajero(int id, String aerolinea, String vuelo, PuestoInformes pi, Tren elTren){
         this.idPasajero = id;
         this.aerolineaPasajero = aerolinea;
         this.vuelo = vuelo;
         this.puestoInforme = pi;
         this.informacion = new Object[2];
+        this.tren = elTren;
     }
 
     @Override

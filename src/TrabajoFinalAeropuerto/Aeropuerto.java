@@ -33,10 +33,14 @@ public class Aeropuerto {
         //Pasajero p2 = new Pasajero(2,"American Airlines","AAS150",pi1);
         //Pasajero p3 = new Pasajero(3,"Aerolineas Argentinas","ARG50",pi1);
         //Pasajero p4 = new Pasajero(3,"Aerolineas Argentinas","ARG68",pi1);
-        Pasajero p1 = new Pasajero(1,"Flybondi","FBY300",pi1);
-        Pasajero p2 = new Pasajero(2,"Flybondi","FBY300",pi1);
-        Pasajero p3 = new Pasajero(3,"Flybondi","FBY300",pi1);
-        Pasajero p4 = new Pasajero(4,"Flybondi","FBY300",pi1);
+
+        Tren elTren = new Tren(3);
+        Maquinista chofer = new Maquinista(elTren, new int[]{1,2,3});
+
+        Pasajero p1 = new Pasajero(1,"Flybondi","FBY300",pi1, elTren);
+        Pasajero p2 = new Pasajero(2,"Flybondi","FBY300",pi1, elTren);
+        Pasajero p3 = new Pasajero(3,"Flybondi","FBY300",pi1, elTren);
+        Pasajero p4 = new Pasajero(4,"Flybondi","FBY300",pi1, elTren);
 
 
         //Se crean los hilos
@@ -47,6 +51,7 @@ public class Aeropuerto {
         Thread h5 = new Thread(g1,"g1");
         Thread h6 = new Thread(g2,"g2");
         Thread h7 = new Thread(g3,"g3");
+        Thread h8 = new Thread(chofer, "Marcos, el chofer");
 
         //Se inician
         h1.start();
@@ -56,10 +61,11 @@ public class Aeropuerto {
         h5.start();
         h6.start();
         h7.start();
+        h8.start();
 
         try {
             //Ejecutamos por 5 segundos para probar
-            Thread.sleep(5000);
+            Thread.sleep(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -70,6 +76,7 @@ public class Aeropuerto {
             h5.interrupt();
             h6.interrupt();
             h7.interrupt();
+            h8.interrupt();
             h1.join();
             h2.join();
             h3.join();
@@ -77,6 +84,7 @@ public class Aeropuerto {
             h5.join();
             h6.join();
             h7.join();
+            h8.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

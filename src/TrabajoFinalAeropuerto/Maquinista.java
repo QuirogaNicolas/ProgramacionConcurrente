@@ -15,11 +15,20 @@ public class Maquinista implements Runnable{
             //Interrumpimos al hilo para que deje de trabajar
             elTren.partir();
             for(int i = 0; i < paradas.length; i++){
-                elTren.parada(i);
+                elTren.parada(paradas[i]);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
-            for(int j = paradas.length - 1; j <= 0; j--){
-                //Acá le resté uno porque ya estoy en la parada final
-                elTren.parada(j);
+            for(int j = paradas.length - 1; j >= 0; j--){
+                elTren.parada(paradas[j]);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
             elTren.volvimos();
         }

@@ -1,5 +1,6 @@
 package TrabajoFinalAeropuerto;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -31,8 +32,12 @@ public class Tren {
                 e.printStackTrace();
             }
         }
-        System.out.println(Thread.currentThread().getName() + " se subió al tren");
         capacidad--;
+        System.out.println(Thread.currentThread().getName() + " se subió al tren");
+        if(capacidad == 0){
+            System.out.println(Thread.currentThread().getName() + " da la señal");
+            partimos.signal();
+        }
         lock.unlock();
     }
 
@@ -51,10 +56,10 @@ public class Tren {
         lock.unlock();
     }
 
-
     public void parada(int numParada){
         lock.lock();
         terminalActual = numParada;
+        System.out.println(Thread.currentThread().getName() + " dice: llegamos a la parada "+terminalActual);
         meBajo.signalAll();
         lock.unlock();
     }
@@ -63,6 +68,18 @@ public class Tren {
         lock.lock();
         terminalActual = 0;
         meSubo.signalAll();
+        System.out.println(Thread.currentThread().getName() + " dice: volvió el tren!");
+        lock.unlock();
+    }
+
+    public void partir(){
+        lock.lock();
+        try {
+            partimos.await(10,TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        System.out.println(Thread.currentThread().getName() + " dice: se va el tren!");
         lock.unlock();
     }
 
