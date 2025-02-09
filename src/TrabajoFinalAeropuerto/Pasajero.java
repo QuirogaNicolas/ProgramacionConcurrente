@@ -1,6 +1,7 @@
 package TrabajoFinalAeropuerto;
 //import java.util.concurrent.Exchanger;
 
+import java.util.Random;
 
 public class Pasajero implements Runnable{
     //Atributos de los pasajeros
@@ -12,6 +13,7 @@ public class Pasajero implements Runnable{
     private PuestoInformes puestoInforme;
     private Object[] informacion;
     private Tren tren;
+    private Freeshop freeshop;
 
     
     //Nuevo pasajero
@@ -42,18 +44,18 @@ public class Pasajero implements Runnable{
         tren.abordar();
         //se sube
         tren.bajar(terminalAsignada); //El tren le debe avisar en qué terminal está y el pasajero comparar con la terminal que se le asigno
-/*
-        //Visita FreeShop
-        if((int)(Math.random() * 2) == 1){
-            //Tiene ganas de entrar al freeshop
 
-            
-        } else{
-            //No tiene ganas de entrar al freeshop y solamente espera
+        //Visita FreeShop
+        Random tengoGanas = new Random();
+        if(tengoGanas.nextInt(2) == 0){
+            //Tiene ganas de entrar al freeshop
+            freeshop.entrarFreeShop();
         }
+         
+        //Espera a hacer el embarque
 
         //Embarque
-        */
+        
     }
 
 }
