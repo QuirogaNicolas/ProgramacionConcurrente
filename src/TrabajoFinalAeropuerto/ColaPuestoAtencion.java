@@ -27,7 +27,7 @@ public class ColaPuestoAtencion {
             }
         }
         System.out.println(Thread.currentThread().getName() + " entró en la fila");
-        lugaresFila--;
+        lugaresFila -= 1;
         EsperarFila.unlock();
     }
 
@@ -39,9 +39,9 @@ public class ColaPuestoAtencion {
         try {
             siguiente.await();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
-        lugaresFila++;
+        lugaresFila += 1;
         hayLugar.signalAll();
         System.out.println(Thread.currentThread().getName() + " anuncia que hay un lugar en la fila");
         EsperarFila.unlock();
@@ -51,7 +51,8 @@ public class ColaPuestoAtencion {
         //El puesto de atención le avisa al guardia que puede llamar a alguien del hall
         EsperarFila.lock();
         System.out.println(Thread.currentThread().getName() + " le avisa al guardia que hay un haga pasar a alguien más a la fila");
-        siguiente.notify();
+        //siguiente.notify();
+        siguiente.signal();
         EsperarFila.unlock();
     }
 }

@@ -1,15 +1,15 @@
 package TrabajoFinalAeropuerto;
 
-import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
-
 public class PuestoAtencion {
+<<<<<<< Updated upstream
+=======
     private ReentrantLock hacerTramite; 
     private Map<String, Integer> mapaTerminales;
     private ColaPuestoAtencion cola;
 
-    public PuestoAtencion(ColaPuestoAtencion cola){
+    public PuestoAtencion(ColaPuestoAtencion cola,Map<String, Integer> mapaTerminales ){
         this.hacerTramite = new ReentrantLock(true);
+        this.mapaTerminales = mapaTerminales;
         this.cola = cola;
     }
 
@@ -23,6 +23,6 @@ public class PuestoAtencion {
         return numTerminal;
     }
 
+>>>>>>> Stashed changes
     
-
 }
