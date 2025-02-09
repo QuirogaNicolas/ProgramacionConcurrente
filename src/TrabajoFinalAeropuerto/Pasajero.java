@@ -33,7 +33,7 @@ public class Pasajero implements Runnable{
         //Visita PI
         this.informacion = puestoInforme.asignarPuestoAtencion(vuelo);
         //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
-        System.out.println("El pasajero "+ this.idPasajero+" se le asignó el puesto de atención");
+        System.out.println("El pasajero "+ Thread.currentThread().getName() +" se le asignó el puesto de atención");
         
         
         //Visita PA

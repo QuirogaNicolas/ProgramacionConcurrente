@@ -13,6 +13,10 @@ public class Aeropuerto {
         ColaPuestoAtencion c2 = new ColaPuestoAtencion(3);
         ColaPuestoAtencion c3 = new ColaPuestoAtencion(3);
 
+        Guardia g1 = new Guardia(c1);
+        Guardia g2 = new Guardia(c2);
+        Guardia g3 = new Guardia(c3);
+
         mapaAerolineas.put("ARG", new Object[]{c1,new PuestoAtencion(c1)});
         mapaAerolineas.put("AAS", new Object[]{c2,new PuestoAtencion(c2)});
         mapaAerolineas.put("FBY", new Object[]{c3,new PuestoAtencion(c3)});
@@ -27,18 +31,22 @@ public class Aeropuerto {
 
 
         //Se crean los hilos
-        //Thread h1 = new Thread(p1)
-        Thread h1 = new Thread(p1);
-        Thread h2 = new Thread(p2);
-        Thread h3 = new Thread(p3);
-        Thread h4 = new Thread(p4);
+        Thread h1 = new Thread(p1,"p1");
+        Thread h2 = new Thread(p2,"p2");
+        Thread h3 = new Thread(p3,"p3");
+        Thread h4 = new Thread(p4,"p4");
+        Thread h5 = new Thread(g1,"g1");
+        Thread h6 = new Thread(g2,"g2");
+        Thread h7 = new Thread(g3,"g3");
 
         //Se inician
-        //h1.start()
         h1.start();
         h2.start();
         h3.start();
         h4.start();
+        h5.start();
+        h6.start();
+        h7.start();
 
         try {
             //Ejecutamos por 5 segundos para probar
@@ -54,6 +62,9 @@ public class Aeropuerto {
             h2.join();
             h3.join();
             h4.join();
+            h5.interrupt();
+            h6.interrupt();
+            h7.interrupt();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -34,7 +34,7 @@ public class ColaPuestoAtencion {
     public void anunciarHall(){
         //Anunciamos a los pasajeros esperando en el hall que hay un nuevo lugar en la fila
         EsperarFila.lock();
-        System.out.println(Thread.currentThread().getName() + " espera a que haya lugar para llamar a alguien del hall");
+        System.out.println(Thread.currentThread().getName() + " espera a llamar a alguien del hall");
         //Esto se tendría que repetir, hay que ver si hago que se repita acá o en el hilo
         try {
             siguiente.await();
