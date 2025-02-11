@@ -6,7 +6,7 @@ public class PuestoInformes {
     private Map<String, Object[]> mapaAerolineas;
     
 
-public PuestoInformes(int id, Map<String,Object[]> mapa){
+public PuestoInformes(Map<String,Object[]> mapa){
     this.mapaAerolineas = mapa;
 }
 

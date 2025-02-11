@@ -17,7 +17,7 @@ public class Maquinista implements Runnable{
             for(int i = 0; i < paradas.length; i++){
                 elTren.parada(paradas[i]);
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -25,7 +25,7 @@ public class Maquinista implements Runnable{
             for(int j = paradas.length - 1; j >= 0; j--){
                 elTren.parada(paradas[j]);
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }

@@ -28,7 +28,6 @@ public class Tren {
                 System.out.println(Thread.currentThread().getName() + " espera subirse al tren");
                 meSubo.await();
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -47,7 +46,6 @@ public class Tren {
             try {
                 meBajo.await();
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

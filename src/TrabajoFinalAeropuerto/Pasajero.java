@@ -6,24 +6,18 @@ import java.util.concurrent.TimeUnit;
 
 public class Pasajero implements Runnable{
     //Atributos de los pasajeros
-    private int idPasajero;
-    private String aerolineaPasajero; //capaz aerolinea está de más
     private String vuelo;
     private PuestoInformes puestoInforme;
     private Object[] informacion;
     private ScheduledFuture<?> partida;
-    private boolean meSubi;
 
     
     //Nuevo pasajero
-    public Pasajero(int id, String aerolinea, String vuelo, PuestoInformes pi, Tren elTren, ScheduledFuture<?> partida){
-        this.idPasajero = id;
-        this.aerolineaPasajero = aerolinea;
+    public Pasajero(String vuelo, PuestoInformes pi, ScheduledFuture<?> partida){
         this.vuelo = vuelo;
         this.puestoInforme = pi;
         this.informacion = new Object[4];
         this.partida = partida;
-        this.meSubi = false;
     }
 
     @Override
@@ -63,6 +57,9 @@ public class Pasajero implements Runnable{
         System.out.println(Thread.currentThread().getName() + " espero a embarcar");
         if(((Avion) informacion[2]).esperarEmbarque()){
             System.out.println(Thread.currentThread().getName() + " se subió al avión");
+        }else{
+            System.out.println(Thread.currentThread().getName() + " la pucha se me fue el avión!");
+
         }
     }
 
