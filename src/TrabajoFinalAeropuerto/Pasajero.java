@@ -1,29 +1,29 @@
 package TrabajoFinalAeropuerto;
-//import java.util.concurrent.Exchanger;
 
 import java.util.Random;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Pasajero implements Runnable{
     //Atributos de los pasajeros
     private int idPasajero;
     private String aerolineaPasajero; //capaz aerolinea está de más
     private String vuelo;
-    private String estadoPasajero;
-    private int terminalAsignada;
     private PuestoInformes puestoInforme;
     private Object[] informacion;
-    private Tren tren;
-    private Freeshop freeshop;
+    private ScheduledFuture<?> partida;
+    private boolean meSubi;
 
     
     //Nuevo pasajero
-    public Pasajero(int id, String aerolinea, String vuelo, PuestoInformes pi, Tren elTren){
+    public Pasajero(int id, String aerolinea, String vuelo, PuestoInformes pi, Tren elTren, ScheduledFuture<?> partida){
         this.idPasajero = id;
         this.aerolineaPasajero = aerolinea;
         this.vuelo = vuelo;
         this.puestoInforme = pi;
-        this.informacion = new Object[2];
-        this.tren = elTren;
+        this.informacion = new Object[4];
+        this.partida = partida;
+        this.meSubi = false;
     }
 
     @Override
@@ -33,29 +33,37 @@ public class Pasajero implements Runnable{
         //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
         System.out.println("El pasajero "+ Thread.currentThread().getName() +" se le asignó el puesto de atención");
         
-        
         //Visita PA
         ((ColaPuestoAtencion) informacion[0]).consultarLugar();
 
-        terminalAsignada = ((PuestoAtencion) informacion[1]).hacerCheckIn(vuelo);; //El hilo puesto de atención le va a asignar una terminal 
-        //Capaz el tren podría asignarse acá simulando que le indican donde queda
+        //El hilo puesto de atención le va a dar un folleto con la información necesaria para el resto del recorrido
+        informacion = ((PuestoAtencion) informacion[1]).hacerCheckIn(vuelo);; 
 
         //Visita Tren
-        tren.abordar();
+        ((Tren) informacion[0]).abordar();
         //se sube
-        tren.bajar(terminalAsignada); //El tren le debe avisar en qué terminal está y el pasajero comparar con la terminal que se le asigno
+        ((Tren) informacion[0]).bajar((int)informacion[1]); //El tren le debe avisar en qué terminal está y el pasajero comparar con la terminal que se le asigno
 
-        //Visita FreeShop
-        Random tengoGanas = new Random();
-        if(tengoGanas.nextInt(2) == 0){
-            //Tiene ganas de entrar al freeshop
-            freeshop.entrarFreeShop();
+        //Considera visitar el FreeShop (solo si tiene tiempo)
+        if(partida.getDelay(TimeUnit.SECONDS) >= 5){
+            Random tengoGanas = new Random();
+            if(tengoGanas.nextInt(2) == 0){
+                //Tiene ganas de entrar al freeshop
+                System.out.println(Thread.currentThread().getName() + " voy a entrar al freeshop");
+                ((Freeshop) informacion[3]).entrarFreeShop();
+                Random quieroComprar = new Random();
+                if(quieroComprar.nextInt(2) == 0){
+                    ((Freeshop) informacion[3]).pagarFreeshop(quieroComprar.nextInt(500));
+                    ((Freeshop) informacion[3]).salirFreeShop();
+                }
+            }
         }
-         
-        //Espera a hacer el embarque
 
-        //Embarque
-        
+        //Espera a hacer el embarque
+        System.out.println(Thread.currentThread().getName() + " espero a embarcar");
+        if(((Avion) informacion[2]).esperarEmbarque()){
+            System.out.println(Thread.currentThread().getName() + " se subió al avión");
+        }
     }
 
 }

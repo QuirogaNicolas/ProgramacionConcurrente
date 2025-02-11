@@ -2,13 +2,18 @@ package TrabajoFinalAeropuerto;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class Aeropuerto {
     public static void main(String[] args){
         //int horarioAtencion = 2;
         Map<String, Object[]> mapaAerolineas = new HashMap<>();
-        Map<String, Integer> mapaTerminales = new HashMap<>();
+        Map<String, Object[]> mapaTerminales = new HashMap<>();
         
+        ScheduledExecutorService partidaVueloFBY = Executors.newScheduledThreadPool(1);
 
         ColaPuestoAtencion c1 = new ColaPuestoAtencion(1);
         ColaPuestoAtencion c2 = new ColaPuestoAtencion(1);
@@ -18,29 +23,42 @@ public class Aeropuerto {
         Guardia g2 = new Guardia(c2);
         Guardia g3 = new Guardia(c3);
 
-        mapaTerminales.put("FBY", 1);
-        mapaTerminales.put("AAS", 2);
-        mapaTerminales.put("ARG", 3);
+        Avion a1 = new Avion();
+        Avion a2 = new Avion();
+        Avion a3 = new Avion();
 
-        mapaAerolineas.put("ARG", new Object[]{c1,new PuestoAtencion(c1, mapaTerminales)});
-        mapaAerolineas.put("AAS", new Object[]{c2,new PuestoAtencion(c2, mapaTerminales)});
-        mapaAerolineas.put("FBY", new Object[]{c3,new PuestoAtencion(c3, mapaTerminales)});
+        Freeshop f1 = new Freeshop();
+        Freeshop f2 = new Freeshop();
+        Freeshop f3 = new Freeshop();
+        
+        PuestoInformes pi1 = new PuestoInformes( 4, mapaAerolineas);
+        Tren elTren = new Tren(3);
+        Maquinista chofer = new Maquinista(elTren, new int[]{1,2,3});
+
+        mapaTerminales.put("FBY", new Object[]{elTren, 1,a1,f1});
+        mapaTerminales.put("AAS", new Object[]{elTren, 2,a2,f2});
+        mapaTerminales.put("ARG", new Object[]{elTren, 3,a3,f3});
+
+        mapaAerolineas.put("ARG", new Object[]{c1,new PuestoAtencion(c1, mapaTerminales), null, null});
+        mapaAerolineas.put("AAS", new Object[]{c2,new PuestoAtencion(c2, mapaTerminales), null, null});
+        mapaAerolineas.put("FBY", new Object[]{c3,new PuestoAtencion(c3, mapaTerminales), null, null});
         
         //Se crean los procesos
-        PuestoInformes pi1 = new PuestoInformes( 4, mapaAerolineas);
-        
+        //Solo quiero el timer, no quiero ninguna acción después de eso (por eso lo pongo en vacío)
+        ScheduledFuture<?> tiempoRestante = partidaVueloFBY.schedule(() -> {}, 10, TimeUnit.SECONDS);
+
         //Pasajero p1 = new Pasajero(1,"Flybondi","FBY300",pi1);
         //Pasajero p2 = new Pasajero(2,"American Airlines","AAS150",pi1);
         //Pasajero p3 = new Pasajero(3,"Aerolineas Argentinas","ARG50",pi1);
         //Pasajero p4 = new Pasajero(3,"Aerolineas Argentinas","ARG68",pi1);
 
-        Tren elTren = new Tren(3);
-        Maquinista chofer = new Maquinista(elTren, new int[]{1,2,3});
+        EmpleadoEmbarque em1 = new EmpleadoEmbarque(tiempoRestante, a1);
 
-        Pasajero p1 = new Pasajero(1,"Flybondi","FBY300",pi1, elTren);
-        Pasajero p2 = new Pasajero(2,"Flybondi","FBY300",pi1, elTren);
-        Pasajero p3 = new Pasajero(3,"Flybondi","FBY300",pi1, elTren);
-        Pasajero p4 = new Pasajero(4,"Flybondi","FBY300",pi1, elTren);
+        Pasajero p1 = new Pasajero(1,"Flybondi","FBY300",pi1, elTren, tiempoRestante);
+        Pasajero p2 = new Pasajero(2,"Flybondi","FBY300",pi1, elTren, tiempoRestante);
+        Pasajero p3 = new Pasajero(3,"Flybondi","FBY300",pi1, elTren, tiempoRestante);
+        Pasajero p4 = new Pasajero(4,"Flybondi","FBY300",pi1, elTren, tiempoRestante);
+
 
 
         //Se crean los hilos
@@ -52,6 +70,7 @@ public class Aeropuerto {
         Thread h6 = new Thread(g2,"g2");
         Thread h7 = new Thread(g3,"g3");
         Thread h8 = new Thread(chofer, "Marcos, el chofer");
+        Thread h9 = new Thread(em1, "em1");
 
         //Se inician
         h1.start();
@@ -62,6 +81,8 @@ public class Aeropuerto {
         h6.start();
         h7.start();
         h8.start();
+        h9.start();
+
 
         try {
             //Ejecutamos por 5 segundos para probar
@@ -85,6 +106,7 @@ public class Aeropuerto {
             h6.join();
             h7.join();
             h8.join();
+            h9.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

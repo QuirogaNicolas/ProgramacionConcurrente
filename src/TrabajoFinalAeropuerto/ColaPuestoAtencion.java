@@ -48,10 +48,9 @@ public class ColaPuestoAtencion {
     }
 
     public void pasaSiguiente(){
-        //El puesto de atención le avisa al guardia que puede llamar a alguien del hall
+        //Se le avisa al guardia que el pasajero actual ya terminó el tramite y puede llamar a alguien más para hacer la fila
         EsperarFila.lock();
-        System.out.println(Thread.currentThread().getName() + " le avisa al guardia que hay un haga pasar a alguien más a la fila");
-        //siguiente.notify();
+        System.out.println(Thread.currentThread().getName() + " le avisa al guardia que haga pasar a alguien más a la fila");
         siguiente.signal();
         EsperarFila.unlock();
     }

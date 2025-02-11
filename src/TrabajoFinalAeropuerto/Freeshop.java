@@ -19,9 +19,7 @@ public class Freeshop {
     public void pagarFreeshop(int valorCompra){
         boolean pago = false;
         if (caja1.intentarPagar(valorCompra) || caja2.intentarPagar(valorCompra)) {
-            pago = true;
-            //Se va del freeshop y deja lugar para alguien más
-            semEntrar.release();        
+            pago = true;       
         }
         if (!pago){
             Random tirarMoneda = new Random();
@@ -31,8 +29,6 @@ public class Freeshop {
             }else{
                 caja2.pagar(valorCompra);
             }
-            //Se va del freeshop y deja lugar para alguien más
-            semEntrar.release();
         }
     }
 

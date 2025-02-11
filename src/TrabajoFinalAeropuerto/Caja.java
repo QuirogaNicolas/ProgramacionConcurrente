@@ -11,7 +11,7 @@ public class Caja {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(Thread.currentThread().getName() + " pagó " + valorCompra + "!!!");
+        System.out.println(Thread.currentThread().getName() + " pagó " + valorCompra + " pesos!!!");
         //Sale de la caja
         semPagar.release();
     }
@@ -19,7 +19,7 @@ public class Caja {
     public boolean intentarPagar(int valorCompra){
         boolean pago = false;
         if(semPagar.tryAcquire()){
-            System.out.println(Thread.currentThread().getName() + " pagó " + valorCompra + "!!!");
+            System.out.println(Thread.currentThread().getName() + " pagó " + valorCompra + " pesos!!!");
             pago = true;
             //Sale de la caja
             semPagar.release();

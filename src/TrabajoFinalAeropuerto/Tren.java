@@ -75,7 +75,7 @@ public class Tren {
     public void partir(){
         lock.lock();
         try {
-            partimos.await(10,TimeUnit.SECONDS);
+            partimos.await(5,TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
