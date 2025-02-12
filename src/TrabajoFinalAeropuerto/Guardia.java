@@ -10,6 +10,7 @@ public class Guardia implements Runnable{
 
     @Override
     public void run() {
+        //El día laboral del guardia
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 //Interrumpimos al hilo para que deje de trabajar

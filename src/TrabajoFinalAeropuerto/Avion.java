@@ -17,6 +17,7 @@ public class Avion {
     }
 
     public void despegue(){
+        //El avión se va y ya no se puede abordar
         subir.lock();
         abordajePermitido = false;
         seFue = true;
@@ -25,6 +26,7 @@ public class Avion {
     }
 
     public boolean esperarEmbarque(){
+        //Los pasajeros van a estar esperando la señal para embarcar siempre y cuando esté permitido el abordaje
         subir.lock();
         if(!abordajePermitido && !seFue){
             try {
@@ -38,6 +40,7 @@ public class Avion {
     }
 
     public void iniciarEmbarque(){
+        //El empleado de embarque va a dar la señal para iniciar el embarque
         subir.lock();
         abordajePermitido = true;
         podemos.signalAll();

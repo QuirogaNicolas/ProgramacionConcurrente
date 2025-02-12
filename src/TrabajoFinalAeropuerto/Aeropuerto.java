@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Aeropuerto {
     public static void main(String[] args){
+        //Preguntas al usuario
         System.out.println("¿Cuántos pasajeros habrá?");
         int cantHilos = TecladoIn.readInt();
         System.out.println("¿Cuántos puestos de informes habrá?");
@@ -21,7 +22,10 @@ public class Aeropuerto {
         int cantTren = TecladoIn.readInt();
         System.out.println("¿Cuánto tiempo tardan en despegar los vuelos (en segundos)?");
         int tiempoDespegue = TecladoIn.readInt();
-        //int horarioAtencion = 2;
+        System.out.println("¿Cuánto tiempo va a estar abierto el aeropuerto (en segundos)?");
+        int tiempoAeropuertoAbierto = TecladoIn.readInt();
+       
+        //Definimos objetos
         Map<String, Object[]> mapaAerolineas = new HashMap<>();
         Map<String, Object[]> mapaTerminales = new HashMap<>();
         String[] vuelos = new String[]{"FBY300","AAS150","ARG50"};
@@ -29,7 +33,7 @@ public class Aeropuerto {
         
         Thread[] pool = new Thread[cantHilos];
 
-        ScheduledExecutorService partidaVueloFBY = Executors.newScheduledThreadPool(1);
+        ScheduledExecutorService partidaVuelo = Executors.newScheduledThreadPool(1);
 
         ColaPuestoAtencion c1 = new ColaPuestoAtencion(cantCola);
         ColaPuestoAtencion c2 = new ColaPuestoAtencion(cantCola);
@@ -65,7 +69,7 @@ public class Aeropuerto {
         
         //Se crean los procesos
         //Solo quiero el timer, no quiero ninguna acción después de eso (por eso lo pongo en vacío)
-        ScheduledFuture<?> tiempoRestante = partidaVueloFBY.schedule(() -> {}, tiempoDespegue, TimeUnit.SECONDS);
+        ScheduledFuture<?> tiempoRestante = partidaVuelo.schedule(() -> {}, tiempoDespegue, TimeUnit.SECONDS);
 
         EmpleadoEmbarque em1 = new EmpleadoEmbarque(tiempoRestante, a1);
         EmpleadoEmbarque em2 = new EmpleadoEmbarque(tiempoRestante, a2);
@@ -96,16 +100,19 @@ public class Aeropuerto {
         h9.start();
         h10.start();
         h11.start();
-
+        
         try {
-            //Ejecutamos por 50 segundos
-            Thread.sleep(15000);
+            Thread.sleep(tiempoAeropuertoAbierto * 1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         
 
          try {
+            for(int i = 0; i < cantHilos; i++){
+                pool[i].interrupt();
+                pool[i].join();
+            }
             //Esperamos a que terminen los hilos
             h5.interrupt();
             h6.interrupt();
@@ -115,6 +122,7 @@ public class Aeropuerto {
             h6.join();
             h7.join();
             h8.join();
+            //Estos hilos van a morir solos porque son los encargados de dar la señal de embarque y salida del avión
             h9.join();
             h10.join();
             h11.join();

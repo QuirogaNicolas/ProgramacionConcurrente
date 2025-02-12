@@ -8,15 +8,20 @@ public class Freeshop {
     private Caja caja1 = new Caja();
     private Caja caja2 = new Caja();
 
-    public void entrarFreeShop(){
+    public void entrarFreeShop() throws InterruptedException{
+        //Los pasajeros van a entrar al freeshop solo si hay lugar disponible, en este caso, los freeshop tienen lugar para 3 personas
         try {
             semEntrar.acquire();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //Se va a interrumpir a los pasajeros que estén esperando en la fila del freeshop cuando cierre el aeropuerto
+            Thread.currentThread().interrupt();
+            System.out.println(Thread.currentThread().getName() + " interrumpido en la espera de entrar al freeshop");
+            throw e;
         }
     }
 
     public void pagarFreeshop(int valorCompra){
+        //Primero los pasajeros intentan pagar en cada caja por si hay alguna vacía. Si las dos están ocupadas eligen una al azar 
         boolean pago = false;
         if (caja1.intentarPagar(valorCompra) || caja2.intentarPagar(valorCompra)) {
             pago = true;       
@@ -33,6 +38,7 @@ public class Freeshop {
     }
 
     public void salirFreeShop(){
+        //Salen los pasajeros del freeshop
         System.out.println(Thread.currentThread().getName() + " se fue del freeshop");
         semEntrar.release();
     }

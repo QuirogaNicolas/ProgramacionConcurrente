@@ -6,6 +6,7 @@ public class Caja {
     private Semaphore semPagar = new Semaphore(1,true);
     
     public void pagar(int valorCompra){
+        //Los pasajeros van a esperar su turno para pagar
         try {
             semPagar.acquire();
         } catch (InterruptedException e) {
@@ -17,6 +18,7 @@ public class Caja {
     }
     
     public boolean intentarPagar(int valorCompra){
+        //Los pasajeros intentan pagar, se fijan si hay un lugar libre
         boolean pago = false;
         if(semPagar.tryAcquire()){
             System.out.println(Thread.currentThread().getName() + " pagó " + valorCompra + " pesos!!!");

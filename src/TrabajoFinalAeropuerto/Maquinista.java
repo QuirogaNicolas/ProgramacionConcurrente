@@ -11,10 +11,12 @@ public class Maquinista implements Runnable{
 
     @Override
     public void run() {
+        //El día laboral del maquinista
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 //Interrumpimos al hilo para que deje de trabajar
                 elTren.partir();
+                //Para en cada parada en la ida y luego en la vuelta
                 for(int i = 0; i < paradas.length; i++){
                     elTren.parada(paradas[i]);
                     try {
@@ -31,6 +33,7 @@ public class Maquinista implements Runnable{
                         Thread.currentThread().interrupt();
                     }
                 }
+                //Avisa que volvió el tren a los pasajeros
                 elTren.volvimos();
             }
         } catch (InterruptedException e) {

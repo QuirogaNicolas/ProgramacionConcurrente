@@ -17,6 +17,7 @@ public class PuestoAtencion {
     }
 
     public Object[] hacerCheckIn(String vuelo){
+        //Los pasajeros van a dar su código de vuelo y les van a asignar toda la información necesaria para el resto de su travesía 
         hacerTramite.lock();
         System.out.println(Thread.currentThread().getName() + " está haciendo el trámite");
         Object[] info;

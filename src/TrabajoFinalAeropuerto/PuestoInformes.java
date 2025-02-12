@@ -11,7 +11,7 @@ public PuestoInformes(Map<String,Object[]> mapa){
 }
 
 public synchronized Object[] asignarPuestoAtencion(String vuelo){
-    //devuelve el puesto de atención correpondiente según las primeras 3 letras del código de vuelo
+    //Devuelve el puesto de atención correpondiente según las primeras 3 letras del código de vuelo
     return mapaAerolineas.get(vuelo.substring(0,3));
 }
 

@@ -22,6 +22,7 @@ public class EmpleadoEmbarque implements Runnable{
             }
         }
         System.out.println(Thread.currentThread().getName() + " va a iniciar el embarque");
+        //Iniciamos el embarque y les damos 2 segundos más de espera
         avion.iniciarEmbarque();
         try {
             Thread.sleep(2000);

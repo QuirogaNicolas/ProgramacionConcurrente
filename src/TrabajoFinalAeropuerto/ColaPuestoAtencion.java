@@ -16,14 +16,19 @@ public class ColaPuestoAtencion {
         this.siguiente = EsperarFila.newCondition();
     }
 
-    public void consultarLugar(){
+    public void consultarLugar() throws InterruptedException{
+        //Los pasajeros van a consultar si hay lugar en la fila y esperar en el hall si no hay lugar
         EsperarFila.lock();
         while (lugaresFila == 0) {
             try {
                 System.out.println(Thread.currentThread().getName() + " espera en el hall para entrar a la fila");
                 hayLugar.await();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                //Si el aeropuerto cerró y hay pasajeros esperando un lugar en la fila entonces se van a despertar
+                Thread.currentThread().interrupt();
+                EsperarFila.unlock();
+                System.out.println(Thread.currentThread().getName() + " interrumpido en hall");
+                throw e;
             }
         }
         System.out.println(Thread.currentThread().getName() + " entró en la fila");
@@ -35,10 +40,10 @@ public class ColaPuestoAtencion {
         //Anunciamos a los pasajeros esperando en el hall que hay un nuevo lugar en la fila
         EsperarFila.lock();
         System.out.println(Thread.currentThread().getName() + " espera a llamar a alguien del hall");
-        //Esto se tendría que repetir, hay que ver si hago que se repita acá o en el hilo
         try {
             siguiente.await();
         } catch (InterruptedException e) {
+            //Cuando cierre el aeropuerto, si el guardia está esperando a esperar una señal, se lo despierta para terminar
             Thread.currentThread().interrupt();
             EsperarFila.unlock();
             throw e;
