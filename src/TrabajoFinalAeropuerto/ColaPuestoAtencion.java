@@ -31,7 +31,7 @@ public class ColaPuestoAtencion {
         EsperarFila.unlock();
     }
 
-    public void anunciarHall(){
+    public void anunciarHall() throws InterruptedException{
         //Anunciamos a los pasajeros esperando en el hall que hay un nuevo lugar en la fila
         EsperarFila.lock();
         System.out.println(Thread.currentThread().getName() + " espera a llamar a alguien del hall");
@@ -40,6 +40,8 @@ public class ColaPuestoAtencion {
             siguiente.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            EsperarFila.unlock();
+            throw e;
         }
         lugaresFila++;
         hayLugar.signalAll();

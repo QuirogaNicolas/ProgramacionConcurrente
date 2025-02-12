@@ -2,6 +2,7 @@ package TrabajoFinalAeropuerto;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Tren {
@@ -70,12 +71,14 @@ public class Tren {
         lock.unlock();
     }
 
-    public void partir(){
+    public void partir() throws InterruptedException{
         lock.lock();
         try {
             partimos.await(5,TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            lock.unlock();
+            throw e;
         }
         System.out.println(Thread.currentThread().getName() + " dice: se va el tren!");
         lock.unlock();

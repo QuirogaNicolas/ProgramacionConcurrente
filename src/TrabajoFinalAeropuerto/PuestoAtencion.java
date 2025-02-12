@@ -7,11 +7,13 @@ public class PuestoAtencion {
     private ReentrantLock hacerTramite; 
     private Map<String, Object[]> mapaTerminales;
     private ColaPuestoAtencion cola;
+    private int id;
 
-    public PuestoAtencion(ColaPuestoAtencion cola,Map<String, Object[]> mapaTerminales ){
+    public PuestoAtencion(int id, ColaPuestoAtencion cola,Map<String, Object[]> mapaTerminales ){
         this.hacerTramite = new ReentrantLock(true);
         this.mapaTerminales = mapaTerminales;
         this.cola = cola;
+        this.id = id;
     }
 
     public Object[] hacerCheckIn(String vuelo){
@@ -19,9 +21,12 @@ public class PuestoAtencion {
         System.out.println(Thread.currentThread().getName() + " está haciendo el trámite");
         Object[] info;
         info = mapaTerminales.get(vuelo.substring(0,3));
-        hacerTramite.unlock();
         cola.pasaSiguiente();
+        hacerTramite.unlock();
         return info;
     }
 
+    public int getId(){
+        return id;
+    }
 }

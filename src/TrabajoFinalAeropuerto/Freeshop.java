@@ -33,7 +33,7 @@ public class Freeshop {
     }
 
     public void salirFreeShop(){
-        System.out.println(Thread.currentThread().getName() + " se fué sin comprar nada");
+        System.out.println(Thread.currentThread().getName() + " se fue del freeshop");
         semEntrar.release();
     }
 }

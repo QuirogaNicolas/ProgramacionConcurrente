@@ -59,9 +59,9 @@ public class Aeropuerto {
         mapaTerminales.put("AAS", new Object[]{elTren, 2,a2,f2});
         mapaTerminales.put("ARG", new Object[]{elTren, 3,a3,f3});
 
-        mapaAerolineas.put("ARG", new Object[]{c1,new PuestoAtencion(c1, mapaTerminales), null, null});
-        mapaAerolineas.put("AAS", new Object[]{c2,new PuestoAtencion(c2, mapaTerminales), null, null});
-        mapaAerolineas.put("FBY", new Object[]{c3,new PuestoAtencion(c3, mapaTerminales), null, null});
+        mapaAerolineas.put("ARG", new Object[]{c1,new PuestoAtencion(1, c1, mapaTerminales), null, null});
+        mapaAerolineas.put("AAS", new Object[]{c2,new PuestoAtencion(2, c2, mapaTerminales), null, null});
+        mapaAerolineas.put("FBY", new Object[]{c3,new PuestoAtencion(3, c3, mapaTerminales), null, null});
         
         //Se crean los procesos
         //Solo quiero el timer, no quiero ninguna acción después de eso (por eso lo pongo en vacío)
@@ -99,7 +99,7 @@ public class Aeropuerto {
 
         try {
             //Ejecutamos por 50 segundos
-            Thread.sleep(50000);
+            Thread.sleep(15000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

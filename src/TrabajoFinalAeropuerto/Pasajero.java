@@ -22,10 +22,11 @@ public class Pasajero implements Runnable{
 
     @Override
     public void run() {
+        System.out.println(Thread.currentThread().getName() + " tiene el vuelo " + vuelo);
         //Visita PI
         informacion = puestoInforme.asignarPuestoAtencion(vuelo);
         //El hilo puesto de informes le va a asignar un puesto de atención y aerolinea según el vuelo que tenga
-        System.out.println("El pasajero "+ Thread.currentThread().getName() +" se le asignó el puesto de atención");
+        System.out.println("El pasajero "+ Thread.currentThread().getName() +" se le asignó el puesto de atención "+ ((PuestoAtencion) informacion[1]).getId());
         
         //Visita PA
         ((ColaPuestoAtencion) informacion[0]).consultarLugar();
@@ -49,8 +50,15 @@ public class Pasajero implements Runnable{
                 if(quieroComprar.nextInt(2) == 0){
                     ((Freeshop) informacion[3]).pagarFreeshop(quieroComprar.nextInt(500));
                     ((Freeshop) informacion[3]).salirFreeShop();
+                } else{
+                    System.out.println(Thread.currentThread().getName() + " no quiero comprar nada");
+                    ((Freeshop) informacion[3]).salirFreeShop();
                 }
+            } else{
+                System.out.println(Thread.currentThread().getName() + " no quiero entrar al freeshop");
             }
+        } else {
+            System.out.println(Thread.currentThread().getName() + " no hay tiempo para el freeshop");
         }
 
         //Espera a hacer el embarque
@@ -59,7 +67,6 @@ public class Pasajero implements Runnable{
             System.out.println(Thread.currentThread().getName() + " se subió al avión");
         }else{
             System.out.println(Thread.currentThread().getName() + " la pucha se me fue el avión!");
-
         }
     }
 

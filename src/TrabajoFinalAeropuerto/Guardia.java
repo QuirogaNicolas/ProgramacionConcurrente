@@ -10,11 +10,14 @@ public class Guardia implements Runnable{
 
     @Override
     public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            //Interrumpimos al hilo para que deje de trabajar
-            cola.anunciarHall();
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                //Interrumpimos al hilo para que deje de trabajar
+                cola.anunciarHall();
+            }  
+        } catch (InterruptedException e) {
+            System.out.println(Thread.currentThread().getName() + " dejó de trabajar");
         }
-        System.out.println(Thread.currentThread().getName() + " dejó de trabajar");
     }
     
     
