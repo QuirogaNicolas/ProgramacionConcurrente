@@ -1,28 +1,33 @@
 package TrabajoFinalAeropuerto;
 
-public class PuestoAtencion {
-<<<<<<< Updated upstream
-=======
-    private ReentrantLock hacerTramite; 
-    private Map<String, Integer> mapaTerminales;
-    private ColaPuestoAtencion cola;
+import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
-    public PuestoAtencion(ColaPuestoAtencion cola,Map<String, Integer> mapaTerminales ){
+public class PuestoAtencion {
+    private ReentrantLock hacerTramite; 
+    private Map<String, Object[]> mapaTerminales;
+    private ColaPuestoAtencion cola;
+    private int id;
+
+    public PuestoAtencion(int id, ColaPuestoAtencion cola,Map<String, Object[]> mapaTerminales ){
         this.hacerTramite = new ReentrantLock(true);
         this.mapaTerminales = mapaTerminales;
         this.cola = cola;
+        this.id = id;
     }
 
-    public int hacerCheckIn(String vuelo){
+    public Object[] hacerCheckIn(String vuelo){
+        //Los pasajeros van a dar su código de vuelo y les van a asignar toda la información necesaria para el resto de su travesía 
         hacerTramite.lock();
         System.out.println(Thread.currentThread().getName() + " está haciendo el trámite");
-        int numTerminal;
-        numTerminal = mapaTerminales.get(vuelo.substring(0,3));
-        hacerTramite.unlock();
+        Object[] info;
+        info = mapaTerminales.get(vuelo.substring(0,3));
         cola.pasaSiguiente();
-        return numTerminal;
+        hacerTramite.unlock();
+        return info;
     }
 
->>>>>>> Stashed changes
-    
+    public int getId(){
+        return id;
+    }
 }
