@@ -6,7 +6,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Tren {
     private ReentrantLock lock;
-    private Condition meBajo;
+    private Condition meBajoTerminal1;
+    private Condition meBajoTerminal2;
+    private Condition meBajoTerminal3;
     private Condition meSubo;
     private Condition partimos;
     private int capacidad;
@@ -14,7 +16,9 @@ public class Tren {
 
     public Tren(int capacidad){
         this.lock = new ReentrantLock();
-        this.meBajo = lock.newCondition();
+        this.meBajoTerminal1 = lock.newCondition();
+        this.meBajoTerminal2 = lock.newCondition();
+        this.meBajoTerminal3 = lock.newCondition();
         this.meSubo = lock.newCondition();
         this.partimos = lock.newCondition();
         this.capacidad = capacidad;
@@ -45,16 +49,26 @@ public class Tren {
         }
         lock.unlock();
     }
+ 
+
 
     public void bajar(int terminalPasajero){
         //Los pasajeros esperan a llegar a la parada que les corresponde
         lock.lock();
-        while (terminalActual != terminalPasajero) {
-            try {
-                meBajo.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        try {
+            switch (terminalPasajero) {
+                case 1:
+                    meBajoTerminal1.await();
+                    break;
+                case 2:
+                    meBajoTerminal2.await();
+                    break;
+                case 3:
+                    meBajoTerminal3.await();
+                    break;
             }
+        } catch (InterruptedException e) {
+            
         }
         System.out.println(Thread.currentThread().getName() + " yo me bajé en la parada "+ terminalActual + " y me correspondía "+ terminalPasajero);
         capacidad++;
@@ -64,9 +78,18 @@ public class Tren {
     public void parada(int numParada){
         //El maquinista avisa a los pasajeros que llegó a una parada
         lock.lock();
-        terminalActual = numParada;
         System.out.println(Thread.currentThread().getName() + " dice: llegamos a la parada "+terminalActual);
-        meBajo.signalAll();
+        switch (numParada) {
+            case 1:
+                meBajoTerminal1.signalAll();
+                break;
+            case 2:
+                meBajoTerminal2.signalAll();
+                break;
+            case 3:
+                meBajoTerminal3.signalAll();
+                break;
+        }
         lock.unlock();
     }
 

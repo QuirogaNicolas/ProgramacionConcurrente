@@ -11,12 +11,13 @@ public class Pasajero implements Runnable{
     private Object[] informacion;
     private ScheduledFuture<?> partida;
 
+
     
     //Nuevo pasajero
     public Pasajero(String vuelo, PuestoInformes pi, ScheduledFuture<?> partida){
         this.vuelo = vuelo;
         this.puestoInforme = pi;
-        this.informacion = new Object[4];
+        this.informacion = new Object[5];
         this.partida = partida;
     }
 
@@ -41,16 +42,17 @@ public class Pasajero implements Runnable{
                 Random tengoGanas = new Random();
                 if(tengoGanas.nextInt(2) == 0){
                     //Tiene ganas de entrar al freeshop
+                    informacion[4] = ((Terminal) informacion[3]).localizarFreeshop();
                     System.out.println(Thread.currentThread().getName() + " voy a entrar al freeshop");
-                    ((Freeshop) informacion[3]).entrarFreeShop();
+                    ((Freeshop) informacion[4]).entrarFreeShop();
                     Random quieroComprar = new Random();
                     if(quieroComprar.nextInt(2) == 0){
                         //Decide si comprar algo o no
-                        ((Freeshop) informacion[3]).pagarFreeshop(quieroComprar.nextInt(500));
-                        ((Freeshop) informacion[3]).salirFreeShop();
+                        ((Freeshop) informacion[4]).pagarFreeshop(quieroComprar.nextInt(500));
+                        ((Freeshop) informacion[4]).salirFreeShop();
                     } else{
                         System.out.println(Thread.currentThread().getName() + " no quiero comprar nada");
-                        ((Freeshop) informacion[3]).salirFreeShop();
+                        ((Freeshop) informacion[4]).salirFreeShop();
                     }
                 } else{
                     System.out.println(Thread.currentThread().getName() + " no quiero entrar al freeshop");
@@ -58,7 +60,7 @@ public class Pasajero implements Runnable{
             } else {
                 System.out.println(Thread.currentThread().getName() + " no hay tiempo para el freeshop");
             }
-
+            informacion[2] = ((Terminal)informacion[3]).buscarPuertaEmbarque(vuelo);
             //Espera a hacer el embarque
             System.out.println(Thread.currentThread().getName() + " espero a embarcar");
             if(((Avion) informacion[2]).esperarEmbarque()){
