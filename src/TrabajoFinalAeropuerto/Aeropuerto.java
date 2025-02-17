@@ -91,12 +91,12 @@ public class Aeropuerto {
         //Se crean los hilos
         Thread h5 = new Thread(guardia,"Guardia");
         Thread h8 = new Thread(chofer, "Marcos, el maquinista");
-        Thread h9 = new Thread(empleadoEmbarque1, ("Empleado de embarque vuelo " + avionAAS150));
-        Thread h10 = new Thread(empleadoEmbarque2, ("Empleado de embarque vuelo " + avionAAS90));
-        Thread h11 = new Thread(empleadoEmbarque3, ("Empleado de embarque vuelo " + avionARG50));
-        Thread h12 = new Thread(empleadoEmbarque4, ("Empleado de embarque vuelo " + avionARG630));
-        Thread h13 = new Thread(empleadoEmbarque5, ("Empleado de embarque vuelo " + avionFBY125));
-        Thread h14 = new Thread(empleadoEmbarque6, ("Empleado de embarque vuelo " + avionFBY300));
+        Thread h9 = new Thread(empleadoEmbarque1, ("Empleado de embarque vuelo AAS150"));
+        Thread h10 = new Thread(empleadoEmbarque2, ("Empleado de embarque vuelo AAS90"));
+        Thread h11 = new Thread(empleadoEmbarque3, ("Empleado de embarque vuelo ARG50"));
+        Thread h12 = new Thread(empleadoEmbarque4, ("Empleado de embarque vuelo ARG630"));
+        Thread h13 = new Thread(empleadoEmbarque5, ("Empleado de embarque vuelo FBY125"));
+        Thread h14 = new Thread(empleadoEmbarque6, ("Empleado de embarque vuelo FBY300"));
 
         //Se inician
         for(int i = 0; i < cantHilos;i++){
@@ -117,15 +117,17 @@ public class Aeropuerto {
             e.printStackTrace();
         }
         
+        System.out.println("a mimiiiiiiir los hiloooos");
 
-         try {
+        try {
+             h5.interrupt();
+             elTren.cerrar();
+             h8.interrupt();
             for(int i = 0; i < cantHilos; i++){
                 pool[i].interrupt();
                 pool[i].join();
             }
             //Esperamos a que terminen los hilos
-            h5.interrupt();
-            h8.interrupt();
             h5.join();
             h8.join();
             //Estos hilos van a morir solos porque son los encargados de dar la señal de embarque y salida del avión

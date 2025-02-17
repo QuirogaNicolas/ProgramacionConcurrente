@@ -1,7 +1,9 @@
 package TrabajoFinalAeropuerto;
 
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -11,10 +13,10 @@ public class Tren {
     private Condition meBajoTerminal2;
     private Condition meBajoTerminal3;
     private Condition meSubo;
-    private Condition partimos;
     private int capacidad;
     private int terminalActual;
     private CyclicBarrier barreraParaSalida;
+    private boolean cerrado;
 
     public Tren(int capacidad){
         this.lock = new ReentrantLock();
@@ -22,26 +24,30 @@ public class Tren {
         this.meBajoTerminal2 = lock.newCondition();
         this.meBajoTerminal3 = lock.newCondition();
         this.meSubo = lock.newCondition();
-        this.partimos = lock.newCondition();
         this.capacidad = capacidad;
         this.terminalActual = 0;
-        this.barreraParaSalida = new CyclicBarrier(capacidad);
+        this.barreraParaSalida = new CyclicBarrier(capacidad + 1);
+        this.cerrado = false;
     }
 
     public void abordar() throws InterruptedException{
         //Los pasajeros abordan el tren siempre que haya lugar
         lock.lock();
             try {
-                while(capacidad == 0){
+                while(capacidad == 0 || barreraParaSalida.isBroken()){
                     System.out.println(Thread.currentThread().getName() + " espera subirse al tren");
                     meSubo.await();
                 }
                 capacidad--;
                 System.out.println(Thread.currentThread().getName() + " se subió al tren");
-                if(capacidad == 0){
-                    //El último en subir le avisa al maquinista que se llenó el tren
-                    System.out.println(Thread.currentThread().getName() + " da la señal");
-                    partimos.signal();
+                try {
+                    barreraParaSalida.await();
+                } catch (BrokenBarrierException e) {
+                    System.out.println(Thread.currentThread().getName() + " la barrera esta rota!");
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    System.out.println(Thread.currentThread().getName() + " interrumpido en la barrera");
+                    throw e;
                 }
             } catch (InterruptedException e) {
                 //Interrupidos los pasajeros que están esperando cuando cierra el aeropuerto
@@ -58,6 +64,7 @@ public class Tren {
     public void bajar(int terminalPasajero){
         //Los pasajeros esperan a llegar a la parada que les corresponde
         lock.lock();
+        while (terminalActual != terminalPasajero) {
         try {
             switch (terminalPasajero) {
                 case 1:
@@ -73,6 +80,7 @@ public class Tren {
         } catch (InterruptedException e) {
             
         }
+        }
         System.out.println(Thread.currentThread().getName() + " yo me bajé en la parada "+ terminalActual + " y me correspondía "+ terminalPasajero);
         capacidad++;
         lock.unlock();
@@ -81,6 +89,7 @@ public class Tren {
     public void parada(int numParada){
         //El maquinista avisa a los pasajeros que llegó a una parada
         lock.lock();
+        terminalActual = numParada;
         System.out.println(Thread.currentThread().getName() + " dice: llegamos a la parada "+terminalActual);
         switch (numParada) {
             case 1:
@@ -101,22 +110,34 @@ public class Tren {
         lock.lock();
         terminalActual = 0;
         meSubo.signalAll();
+        if (barreraParaSalida.isBroken()) {
+            //Resetear solo si está rota
+            barreraParaSalida.reset(); 
+        }
         System.out.println(Thread.currentThread().getName() + " dice: volvió el tren!");
         lock.unlock();
     }
 
     public void partir() throws InterruptedException{
         //El maquinista espera a que se llene el tren o 5 segundos (lo que pase primero)
-        lock.lock();
-        try {
-            partimos.await(5,TimeUnit.SECONDS);
-            System.out.println(Thread.currentThread().getName() + " dice: se va el tren!");
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw e;
-        } finally{
-            lock.unlock();
-        }
+        
+            try {
+                barreraParaSalida.await();
+            } catch (BrokenBarrierException e) {
+                if(cerrado){
+                    System.out.println(Thread.currentThread().getName() + " la estación cerró!");
+                    Thread.currentThread().interrupt();
+                    throw new InterruptedException();
+                }
+                System.out.println(Thread.currentThread().getName() + " dice: se va el tren!");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw e;
+            }
+    }
+
+    public void cerrar(){
+        cerrado = true;
     }
 
 }

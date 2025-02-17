@@ -17,7 +17,8 @@ public synchronized Object[] asignarPuestoAtencion(String vuelo){
         try {
             this.wait();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            System.out.println(Thread.currentThread().getName() + " interrumpido en la espera del puesto de informes");
         }
     }
     desocupado = false;
@@ -27,7 +28,7 @@ public synchronized Object[] asignarPuestoAtencion(String vuelo){
 
 public synchronized void liberarPuesto(){
     desocupado = true; 
-    this.notify();
+    notify();
 }
 
 }

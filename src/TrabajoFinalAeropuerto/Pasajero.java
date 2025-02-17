@@ -28,6 +28,8 @@ public class Pasajero implements Runnable{
         informacion = puestoInforme.asignarPuestoAtencion(vuelo);
         //El hilo puesto de informes le va a asignar un puesto de atención
         System.out.println("El pasajero "+ Thread.currentThread().getName() +" se le asignó el puesto de atención "+ ((PuestoAtencion) informacion[1]).getId());
+        //Dejamos el puesto de atención 
+        puestoInforme.liberarPuesto();
         try {
             //Visita PA
             ((ColaPuestoAtencion) informacion[0]).consultarLugar();

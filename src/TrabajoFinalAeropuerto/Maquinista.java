@@ -37,6 +37,7 @@ public class Maquinista implements Runnable{
                 elTren.volvimos();
             }
         } catch (InterruptedException e) {
+        } finally{
             System.out.println(Thread.currentThread().getName() + " dejó de trabajar");
         }
         
