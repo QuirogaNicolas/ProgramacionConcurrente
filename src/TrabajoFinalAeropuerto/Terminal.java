@@ -7,16 +7,16 @@ public class Terminal {
     Freeshop freeshop;
     Map<String, Avion> vuelosDelDia;
 
-    public Terminal(Map<String, Avion> vuelosDelDia){
+    public Terminal(Map<String, Avion> vuelosDelDia) {
         this.freeshop = new Freeshop();
         this.vuelosDelDia = new HashMap<>(vuelosDelDia);
-    }   
+    }
 
-    public Avion buscarPuertaEmbarque(String vuelo){
+    public Avion buscarPuertaEmbarque(String vuelo) {
         return vuelosDelDia.get(vuelo);
     }
 
-    public Freeshop localizarFreeshop(){
+    public Freeshop localizarFreeshop() {
         return freeshop;
     }
 
