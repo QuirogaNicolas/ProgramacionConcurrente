@@ -35,14 +35,9 @@ public class Aeropuerto {
 
         ScheduledExecutorService partidaVuelo = Executors.newScheduledThreadPool(1);
 
-        //HACER UNA SOLA COLA CREO
-        ColaPuestoAtencion c1 = new ColaPuestoAtencion(cantCola);
-        ColaPuestoAtencion c2 = new ColaPuestoAtencion(cantCola);
-        ColaPuestoAtencion c3 = new ColaPuestoAtencion(cantCola);
+        ColaPuestoAtencion colaPAtencion = new ColaPuestoAtencion(cantCola);
 
-        Guardia g1 = new Guardia(c1);
-        Guardia g2 = new Guardia(c2);
-        Guardia g3 = new Guardia(c3);
+        Guardia guardia = new Guardia(colaPAtencion);
 
         Avion avionFBY300 = new Avion();
         Avion avionAAS150 = new Avion();
@@ -73,9 +68,9 @@ public class Aeropuerto {
         mapaTerminales.put("AAS", new Object[]{elTren, 2,null,terminal2, null});
         mapaTerminales.put("ARG", new Object[]{elTren, 3,null,terminal3, null});
 
-        mapaAerolineas.put("ARG", new Object[]{c1,new PuestoAtencion(1, c1, mapaTerminales), null, null, null});
-        mapaAerolineas.put("AAS", new Object[]{c2,new PuestoAtencion(2, c2, mapaTerminales), null, null, null});
-        mapaAerolineas.put("FBY", new Object[]{c3,new PuestoAtencion(3, c3, mapaTerminales), null, null, null});
+        mapaAerolineas.put("ARG", new Object[]{colaPAtencion,new PuestoAtencion(1, colaPAtencion, mapaTerminales), null, null, null});
+        mapaAerolineas.put("AAS", new Object[]{colaPAtencion,new PuestoAtencion(2, colaPAtencion, mapaTerminales), null, null, null});
+        mapaAerolineas.put("FBY", new Object[]{colaPAtencion,new PuestoAtencion(3, colaPAtencion, mapaTerminales), null, null, null});
         
         //Se crean los procesos
         //Solo quiero el timer, no quiero ninguna acción después de eso (por eso lo pongo en vacío)
@@ -94,9 +89,7 @@ public class Aeropuerto {
         }
 
         //Se crean los hilos
-        Thread h5 = new Thread(g1,"Guardia 1");
-        Thread h6 = new Thread(g2,"Guardia 2");
-        Thread h7 = new Thread(g3,"Guardia 3");
+        Thread h5 = new Thread(guardia,"Guardia");
         Thread h8 = new Thread(chofer, "Marcos, el maquinista");
         Thread h9 = new Thread(empleadoEmbarque1, ("Empleado de embarque vuelo " + avionAAS150));
         Thread h10 = new Thread(empleadoEmbarque2, ("Empleado de embarque vuelo " + avionAAS90));
@@ -110,8 +103,6 @@ public class Aeropuerto {
             pool[i].start();
         }
         h5.start();
-        h6.start();
-        h7.start();
         h8.start();
         h9.start();
         h10.start();
@@ -134,12 +125,8 @@ public class Aeropuerto {
             }
             //Esperamos a que terminen los hilos
             h5.interrupt();
-            h6.interrupt();
-            h7.interrupt();
             h8.interrupt();
             h5.join();
-            h6.join();
-            h7.join();
             h8.join();
             //Estos hilos van a morir solos porque son los encargados de dar la señal de embarque y salida del avión
             h9.join();

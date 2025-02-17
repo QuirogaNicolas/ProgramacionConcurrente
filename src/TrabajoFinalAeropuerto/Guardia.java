@@ -20,6 +20,4 @@ public class Guardia implements Runnable{
             System.out.println(Thread.currentThread().getName() + " dejó de trabajar");
         }
     }
-    
-    
 }

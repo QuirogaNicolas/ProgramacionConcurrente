@@ -1,5 +1,6 @@
 package TrabajoFinalAeropuerto;
 
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -13,6 +14,7 @@ public class Tren {
     private Condition partimos;
     private int capacidad;
     private int terminalActual;
+    private CyclicBarrier barreraParaSalida;
 
     public Tren(int capacidad){
         this.lock = new ReentrantLock();
@@ -23,31 +25,32 @@ public class Tren {
         this.partimos = lock.newCondition();
         this.capacidad = capacidad;
         this.terminalActual = 0;
+        this.barreraParaSalida = new CyclicBarrier(capacidad);
     }
 
     public void abordar() throws InterruptedException{
         //Los pasajeros abordan el tren siempre que haya lugar
         lock.lock();
-        while(capacidad == 0){
             try {
-                System.out.println(Thread.currentThread().getName() + " espera subirse al tren");
-                meSubo.await();
+                while(capacidad == 0){
+                    System.out.println(Thread.currentThread().getName() + " espera subirse al tren");
+                    meSubo.await();
+                }
+                capacidad--;
+                System.out.println(Thread.currentThread().getName() + " se subió al tren");
+                if(capacidad == 0){
+                    //El último en subir le avisa al maquinista que se llenó el tren
+                    System.out.println(Thread.currentThread().getName() + " da la señal");
+                    partimos.signal();
+                }
             } catch (InterruptedException e) {
                 //Interrupidos los pasajeros que están esperando cuando cierra el aeropuerto
                 Thread.currentThread().interrupt();
-                lock.unlock();
                 System.out.println(Thread.currentThread().getName() + " interrumpido en la espera del tren");
                 throw e;
+            } finally{
+                lock.unlock();
             }
-        }
-        capacidad--;
-        System.out.println(Thread.currentThread().getName() + " se subió al tren");
-        if(capacidad == 0){
-            //El último en subir le avisa al maquinista que se llenó el tren
-            System.out.println(Thread.currentThread().getName() + " da la señal");
-            partimos.signal();
-        }
-        lock.unlock();
     }
  
 
@@ -107,13 +110,13 @@ public class Tren {
         lock.lock();
         try {
             partimos.await(5,TimeUnit.SECONDS);
+            System.out.println(Thread.currentThread().getName() + " dice: se va el tren!");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            lock.unlock();
             throw e;
+        } finally{
+            lock.unlock();
         }
-        System.out.println(Thread.currentThread().getName() + " dice: se va el tren!");
-        lock.unlock();
     }
 
 }

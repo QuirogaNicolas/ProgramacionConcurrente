@@ -19,21 +19,22 @@ public class ColaPuestoAtencion {
     public void consultarLugar() throws InterruptedException{
         //Los pasajeros van a consultar si hay lugar en la fila y esperar en el hall si no hay lugar
         EsperarFila.lock();
-        while (lugaresFila == 0) {
             try {
-                System.out.println(Thread.currentThread().getName() + " espera en el hall para entrar a la fila");
-                hayLugar.await();
+                while (lugaresFila == 0) {
+                    System.out.println(Thread.currentThread().getName() + " espera en el hall para entrar a la fila");
+                    hayLugar.await();
+                }
+                System.out.println(Thread.currentThread().getName() + " entró en la fila");
+                lugaresFila--;
             } catch (InterruptedException e) {
                 //Si el aeropuerto cerró y hay pasajeros esperando un lugar en la fila entonces se van a despertar
                 Thread.currentThread().interrupt();
-                EsperarFila.unlock();
                 System.out.println(Thread.currentThread().getName() + " interrumpido en hall");
                 throw e;
+            } finally{
+                EsperarFila.unlock();
             }
-        }
-        System.out.println(Thread.currentThread().getName() + " entró en la fila");
-        lugaresFila--;
-        EsperarFila.unlock();
+        
     }
 
     public void anunciarHall() throws InterruptedException{
@@ -42,16 +43,16 @@ public class ColaPuestoAtencion {
         System.out.println(Thread.currentThread().getName() + " espera a llamar a alguien del hall");
         try {
             siguiente.await();
+            lugaresFila++;
+            hayLugar.signalAll();
+            System.out.println(Thread.currentThread().getName() + " anuncia que hay un lugar en la fila");
         } catch (InterruptedException e) {
             //Cuando cierre el aeropuerto, si el guardia está esperando a esperar una señal, se lo despierta para terminar
             Thread.currentThread().interrupt();
-            EsperarFila.unlock();
             throw e;
+        } finally{
+            EsperarFila.unlock();
         }
-        lugaresFila++;
-        hayLugar.signalAll();
-        System.out.println(Thread.currentThread().getName() + " anuncia que hay un lugar en la fila");
-        EsperarFila.unlock();
     }
 
     public void pasaSiguiente(){
